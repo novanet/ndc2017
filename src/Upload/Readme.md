@@ -1,0 +1,1 @@
+Code for registration of user, log in and upload of image from iPad goes here
