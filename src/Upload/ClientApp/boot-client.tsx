@@ -20,5 +20,5 @@ ReactDOM.render(
     <Provider store={ store }>
         <Router history={ history } children={ routes } />
     </Provider>,
-    document.getElementById('react-app')
+    document.getElementById('ndc2017-app')
 );
