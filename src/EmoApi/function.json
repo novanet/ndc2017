@@ -1,0 +1,21 @@
+{
+  "bindings": [
+    {
+      "name": "myBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "samples-workitems/{name}",
+      "connection": "storageAccountConnectionString"
+    },
+    {
+      "type": "documentDB",
+      "name": "$return",
+      "databaseName": "outDatabase",
+      "collectionName": "emotionResults",
+      "createIfNotExists": true,
+      "connection": "documentDbConnectionString",
+      "direction": "out"
+    }
+  ],
+  "disabled": false
+}
