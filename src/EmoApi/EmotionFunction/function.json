@@ -4,7 +4,7 @@
       "name": "myBlob",
       "type": "blobTrigger",
       "direction": "in",
-      "path": "samples-workitems/{name}",
+      "path": "incomingPhotos/{name}",
       "connection": "storageAccountConnectionString"
     },
     {
