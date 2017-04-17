@@ -1,0 +1,245 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": { 
+        "documentdbname": 
+        {
+            "type": "string",
+            "defaultValue": "ndcemotions"
+        },
+        "blobStorageAccountName": 
+        {
+            "type": "string",
+            "defaultValue": "ndcphotos"
+        },
+        "emotionApiName": 
+        {
+            "type": "string",
+            "defaultValue": "ndcemotionapi"
+        },
+        "functionAppName":
+        {
+            "type": "string",
+            "defaultValue": "ndcemotionapifunction"
+        },
+        "functionAppServicePlanName":
+        {
+            "type": "string",
+            "defaultValue": "ndcappserviceplan"
+        },
+        "functionAppStorageAccountName":
+        {
+            "type": "string",
+            "defaultValue": "ndcfunctionappstorageacc"
+        },
+        "functionAppSourceCodeRepositoryURL": {
+            "type": "string",
+            "defaultValue": "https://github.com/novanet/ndc2017.git",
+            "metadata": {
+                "description": "Source code repository URL"
+            }
+        },
+        "functionAppSourceCodeBranch": {
+            "type": "string",
+            "defaultValue": "master",
+            "metadata": {
+                "description": "Source code repository branch"
+            }
+        },
+        "functionAppSourceCodeManualIntegration": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Use 'true' if you are deploying from the base repo. Use 'false' if you are deploying from your own fork. If you use 'false', make sure that you have Administrator rights in the repo. If you get an error, manually add GitHub integration to another web app, to associate a GitHub access token with your Azure subscription."
+            }
+        }
+     },
+    "variables": { },
+    "resources": 
+    [
+        {
+            "name": "[parameters('blobStorageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2016-01-01",
+            "sku": 
+            {
+                "name": "Standard_LRS"
+            },
+            "kind": "BlobStorage",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "properties": 
+            {
+                // "customDomain": {
+                // "name": "string",
+                // "useSubDomain": boolean
+                // },
+                "encryption": 
+                {
+                    "services": 
+                    {
+                        "blob": 
+                        {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "name": "[parameters('documentdbname')]",
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "2015-04-08",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "properties": 
+            {
+                "name": "[parameters('documentdbname')]",
+                // "consistencyPolicy": 
+                // {
+                //     "defaultConsistencyLevel": "Strong"
+                //     // "maxStalenessPrefix": "integer",
+                //     // "maxIntervalInSeconds": "integer"
+                // },
+                "locations": 
+                [
+                    {
+                        "locationName": "[resourceGroup().location]",
+                        "failoverPriority": "0"
+                    }
+                ],
+                "databaseAccountOfferType": "Standard"
+                // "ipRangeFilter": "string"
+            }
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/3ff28b41-4657-4e36-886f-9a09539f8f62/resourceGroups/NovanetNdc2017/providers/Microsoft.CognitiveServices/accounts/testingemotions'.",
+            "type": "Microsoft.CognitiveServices/accounts",
+            "sku": {
+                "name": "F0"
+            },
+            "kind": "Emotion",
+            "name": "[parameters('emotionApiName')]",
+            "apiVersion": "2016-02-01-preview",
+            "location": "westus",
+            "properties": {},
+            "dependsOn": []
+        },
+        {
+            "comments": "App Service Plan for the function app",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2015-04-01",
+            "name": "[Parameters('functionAppServicePlanName')]",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "properties": 
+            {
+                "name": "[Parameters('functionAppServicePlanName')]",
+                "sku": "Basic",
+                "workerSize": "0",
+                "numberOfWorkers": 1
+            }
+        },
+        {
+            "comments": "Storage Account for the function app",
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[Parameters('functionAppStorageAccountName')]",
+            "apiVersion": "2016-01-01",
+            "kind": "Storage",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Free"
+            },
+            "properties": { }
+        },
+        {
+            "comments": "The function App for sending blobs to Emotion API and store the result",
+            "type": "Microsoft.Web/sites",
+            "kind": "functionapp",
+            "name": "[parameters('functionAppName')]",
+            "apiVersion": "2015-08-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "name": "[parameters('functionAppName')]",
+                "hostNames": [
+                    "[concat(parameters('functionAppName'),'.azurewebsites.net')]"
+                ],
+                "enabledHostNames": [
+                    "[concat(parameters('functionAppName'),'.azurewebsites.net')]",
+                    "[concat(parameters('functionAppName'),'.scm.azurewebsites.net')]"
+                ],
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('functionAppName'),'.azurewebsites.net')]",
+                        "sslState": 0,
+                        "thumbprint": null,
+                        "ipBasedSslState": 0
+                    },
+                    {
+                        "name": "[concat(parameters('functionAppName'),'.scm.azurewebsites.net')]",
+                        "sslState": 0,
+                        "thumbprint": null,
+                        "ipBasedSslState": 0
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('functionAppServicePlanName'))]",
+                "siteConfig": {
+                    "comments": "alwaysOn might require a Standard Tier App Service Plan",
+                    "alwaysOn": true,
+                    "appSettings": [
+                        { "name": "FUNCTIONS_EXTENSION_VERSION", "value": "~1" },
+                        { "name": "Project", "value": "src/EmoApi" },
+                        { "name": "AzureWebJobsStorage", "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('functionAppStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('functionAppStorageAccountName')), '2015-05-01-preview').key1,';')]" },
+                        { "name": "AzureWebJobsDashboard", "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('functionAppStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('functionAppStorageAccountName')), '2015-05-01-preview').key1,';')]" },
+                        { "name": "storageAccountConnectionString", "Value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('blobStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('blobStorageAccountName')), '2015-05-01-preview').key1,';')]"},
+                        { "name": "documentDbConnectionString", "value": "[concat('AccountEndpoint=https://', parameters('documentdbname'), '.documents.azure.com:443/;AccountKey=',listkeys(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('documentdbname')), '2016-03-31').primaryMasterKey,';')]"},
+                        { "name": "emotionApiKey", "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('emotionApiName')), '2016-02-01-preview').key1]", "dependsOn": "[resourceId('Microsoft.Web/sites/sourcecontrols', parameters('functionAppName'), 'web')]" }
+                    ]
+                    // "cors": {
+                    //     "allowedOrigins": [
+                    //         "*"
+                    //     ]
+                    // }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('functionAppStorageAccountName'))]",
+                "[resourceId('Microsoft.Web/serverfarms', parameters('functionAppServicePlanName'))]"
+            ],
+            "resources": [
+                // {
+                //     "apiVersion": "2015-08-01",
+                //     "name": "appsettings",
+                //     "type": "config",
+                //     "dependsOn": [
+                //         "[resourceId('Microsoft.Web/Sites', parameters('functionAppName'))]",
+                //         "[resourceId('Microsoft.Web/Sites/sourcecontrols', parameters('functionAppName'), 'web')]",
+                //         "[resourceId('Microsoft.Storage/storageAccounts', parameters('functionAppStorageAccountName'))]"
+                //     ],
+                //     "properties": {
+                //         "FUNCTIONS_EXTENSION_VERSION": "~1",
+                //         "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('functionAppStorageAccountName'), ';AccountKey=', listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('functionAppStorageAccountName')), '2015-05-01-preview').key1)]",
+                //         "AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('functionAppStorageAccountName'), ';AccountKey=', listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('functionAppStorageAccountName')), '2015-05-01-preview').key1)]"
+                //     }
+                // },
+                {
+                    "apiVersion": "2015-08-01",
+                    "name": "web",
+                    "type": "sourcecontrols",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites/', parameters('functionAppName'))]"
+                    ],
+                    "properties": {
+                        "RepoUrl": "[parameters('functionAppSourceCodeRepositoryURL')]",
+                        "branch": "[parameters('functionAppSourceCodeBranch')]",
+                        "IsManualIntegration": "[parameters('functionAppSourceCodeManualIntegration')]"
+                    }
+                }
+            ]
+        }
+    ],
+  "outputs": {  }
+}
