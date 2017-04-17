@@ -9,7 +9,7 @@ public static async Task<object> Run(Stream myBlob, string name, TraceWriter log
     log.Info($"C# Blob trigger function Processed blob\n Name:{name} \n Size: {myBlob.Length} Bytes");
 
     //Do emotions stuff here
-    var emotionsApiKey = GetEnvironmentVariable("emotionApiKey");
+    var emotionsApiKey = System.Environment.GetEnvironmentVariable("emotionApiKey", EnvironmentVariableTarget.Process);
     var emotionClient = new EmotionServiceClient(emotionsApiKey);
     var emotions = await emotionClient.RecognizeAsync(myBlob);
 
