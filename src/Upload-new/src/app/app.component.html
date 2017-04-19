@@ -1,0 +1,22 @@
+<div *ngIf="!isSubmitted">
+  <button type="button" (click)="reset()">Nullstill</button>
+</div>
+
+<div *ngIf="!isSubmitted">
+<p>Ta ditt bilde her:</p>
+<input type="file" #inputFile accept="image/*" />
+
+<div *ngIf="fileSelected">  
+  <p>Ditt navn</p>
+  <input type="text" [(ngModel)]="name" />
+  <p>Din epost</p>
+  <input type="email" [(ngModel)]="email" />
+  <button type="button" (click)="submit()" [disabled]="!fileSelected || !name || !email">Send inn</button>
+  <img [src]="imageSrc" *ngIf="imageSrc" />
+</div>
+</div>
+
+<div *ngIf="isSubmitted">
+  <h3>Takk for ditt bidrag!</h3>
+<p><small>Velkommen tilbake en annen gang.</small></p>
+</div>
