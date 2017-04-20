@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - novanet</title>
+    <base href="/">
+    <link rel="stylesheet" href="~/Styles/upload.css" />
+</head>
+<body>
+    <section>
+    @RenderBody()
+    </section>
+
+    @RenderSection("Scripts", required: false)
+    <script type="text/javascript" src="~/dist/inline.bundle.js"></script>
+    <script type="text/javascript" src="~/dist/polyfills.bundle.js"></script>
+    <script type="text/javascript" src="~/dist/vendor.bundle.js"></script>
+    <script type="text/javascript" src="~/dist/main.bundle.js"></script>
+</body>
+</html>
