@@ -1,9 +1,8 @@
 param (
-    [string]$SubscriptionName = $(Read-Host "Enter subscription name (Press Enter for default subscription)"),
-    [string]$ResourceGroupName = $(Read-Host "Enter Resource group name (Press Enter for 'NovanetNdc2017')")
+    [string]$ResourceGroupName = $(Read-Host "Enter Resource group name (Press Enter for 'NDC2017')")
 )
 
-if([string]::IsNullOrEmpty($ResourceGroupName)) { $ResourceGroupName = "NovanetNdc2017"; }
+if([string]::IsNullOrEmpty($ResourceGroupName)) { $ResourceGroupName = "NDC2017"; }
 Write-Host "Resource group: "$ResourceGroupName;
 
 Try {
@@ -13,7 +12,7 @@ Try {
     Login-AzureRmAccount
   }
 }
-if($SubscriptionId) { Set-AzureRmContext -SubscriptionName $SubscriptionName; }
+Set-AzureRmContext -SubscriptionId 64aa2c64-0643-46e6-b55f-3e37a345f405;
 
-New-AzureRmResourceGroup -Name $ResourceGroupName -Location "North Europe"
-New-AzureRmResourceGroupDeployment -Name NovanetNdcDeployment -ResourceGroupName $ResourceGroupName -TemplateFile azuredeploy.json -TemplateParameterFile parameters.json;
+New-AzureRmResourceGroup -Name $ResourceGroupName -Location "West Europe"
+New-AzureRmResourceGroupDeployment -Name Ndc2017Deployment -ResourceGroupName $ResourceGroupName -TemplateFile azuredeploy.json -TemplateParameterFile parameters.json;
