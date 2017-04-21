@@ -1,22 +1,43 @@
-<div *ngIf="!isSubmitted">
-  <button type="button" (click)="reset()">Nullstill</button>
-</div>
-
-<div *ngIf="!isSubmitted">
-<p>Ta ditt bilde her:</p>
-<input type="file" #inputFile accept="image/*" />
-
-<div *ngIf="fileSelected">  
-  <p>Ditt navn</p>
-  <input type="text" [(ngModel)]="name" />
-  <p>Din epost</p>
-  <input type="email" [(ngModel)]="email" />
-  <button type="button" (click)="submit()" [disabled]="!fileSelected || !name || !email">Send inn</button>
-  <img [src]="imageSrc" *ngIf="imageSrc" />
+<div class="container-fluid">
+<div class="row">
+  <div class="col-sm-2">
+    <img src="/Styles/images/novanet-logo.svg" />
+  </div>
+<div class="float-right">
+  <div (click)="reset()">
+    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+  </div>
 </div>
 </div>
 
-<div *ngIf="isSubmitted">
-  <h3>Takk for ditt bidrag!</h3>
-<p><small>Velkommen tilbake en annen gang.</small></p>
+<div class="container-fluid">
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <div class="row">
+      <div class="col-sm-9 col-sm-offset-1 booth" [class.booth-user-icon]="!imageSrc" [style.background-image]="imageSrc">
+      </div>
+    </div>
+
+    <div *ngIf="!isSubmitted" class="col-sm-6 col-sm-offset-3">
+      <button type="button" class="button" (click)="captureImage()">Ta bilde</button>
+      <input type="file" #inputFile accept="image/*" />
+
+      <div *ngIf="fileSelected" class="input-group">
+        <p>Ditt navn</p>
+       <input type="text" [(ngModel)]="name" class="form-control" />
+        <p>Din epost</p>
+        <input type="email" [(ngModel)]="email" class="form-control" />
+        <button type="button" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email">Send inn</button>
+
+      </div>
+    </div>
+
+    <div *ngIf="isSubmitted" class="row submit-message">
+      <div class="col-sm-12">
+        <h3>Takk for ditt bidrag!</h3>
+        <p><small>Velkommen tilbake en annen gang.</small></p>
+      </div>
+    </div>
+  </div>
+</div>
 </div>

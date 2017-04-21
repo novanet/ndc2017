@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Upload.Security;
 
-namespace novanet
+namespace Upload
 {
     public class Startup
     {
@@ -32,6 +30,7 @@ namespace novanet
         {
             // Add framework services.
             services.AddMvc();
+            services.AddTransient<IApiKeyValidator, ApiKeyValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,14 +41,22 @@ namespace novanet
 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();    
+                app.UseDeveloperExceptionPage();
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacement = true,
+                    ReactHotModuleReplacement = true
+                });
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles(new StaticFileOptions(){
+            app.UseMiddleware<ApiKeyAuthenticationMiddleware>();
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "dist")),
                 RequestPath = new PathString("/dist")
             });
@@ -65,6 +72,10 @@ namespace novanet
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapSpaFallbackRoute(
+                name: "spa-fallback",
+                defaults: new { controller = "Home", action = "Index" });
             });
         }
     }
