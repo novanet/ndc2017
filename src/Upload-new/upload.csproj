@@ -15,7 +15,7 @@
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
   </ItemGroup>
-<!-- Include the newly-built files in the publish output -->
+ <!-- Include the newly-built files in the publish output -->
     <!--<ItemGroup>
       <DistFiles Include="dist\**" />
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
@@ -23,5 +23,9 @@
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </ResolvedFileToPublish>
     </ItemGroup>-->
-
+<ItemGroup>
+ <Content Include="dist\**\*" CopyToPublishDirectory="PreserveNewest" />
+ <Content Include="Styles\**\*" CopyToPublishDirectory="PreserveNewest" />
+  
+  </ItemGroup>
 </Project>

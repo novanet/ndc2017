@@ -30,27 +30,31 @@ export class AppComponent {
   }
 
   public submit() {
-  //Submit to api
-  //then
+    //Submit to api
+    //then
     this.setupSubmitMessage();
-    this.reset();
   }
 
   private setupSubmitMessage() {
     this.isSubmitted = true;
 
     setTimeout(() => {
-      this.isSubmitted = false;
+      this.reset();
     }, 2000);
   }
 
   public reset() {
+    this.isSubmitted = false;
     this.file = null;
     this.name = null;
     this.email = null;
     this.inputFileElement.value = null;
     this.imageSrc = null;
     this.fileSelected = false;
+  }
+
+  public captureImage() {
+    this.inputFileElement.click();
   }
 
   private handleFile = (ev: Event) => {
@@ -66,6 +70,6 @@ export class AppComponent {
   }
 
   private onLoadFile = (ev: any) => {
-    this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(ev.target.result);
+    this.imageSrc = this.sanitizer.bypassSecurityTrustStyle(`url(${ev.target.result})`);
   };
 }
