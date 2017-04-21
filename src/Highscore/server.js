@@ -38,6 +38,10 @@ app.all('*', function(req, res, next) {
     }
     next();
 });
+app.use(function(req, res, next) {
+     res.header('Content-Type', 'text/html; charset=utf-8');
+     next();
+ });
 
 // set the port
 var port = process.env.PORT || 3000;
