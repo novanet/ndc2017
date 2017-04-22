@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -18,7 +18,7 @@ namespace Upload.Security
            ILoggerFactory loggerFactory,
            UrlEncoder encoder)
        : base(next, options, loggerFactory, encoder)
-    {
+        {
             _validator = validator;
         }
 

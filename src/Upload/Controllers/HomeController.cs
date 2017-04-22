@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Upload.Controllers
 {
@@ -10,6 +6,7 @@ namespace Upload.Controllers
     {
         public IActionResult Index()
         {
+            ViewData["Title"] = "Upload";
             return View();
         }
 
