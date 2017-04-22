@@ -14,7 +14,8 @@
 <div class="row">
   <div class="col-sm-8 col-sm-offset-2">
     <div class="row">
-      <div class="col-sm-9 col-sm-offset-1 booth" [class.booth-user-icon]="!imageSrc" [style.background-image]="imageSrc">
+      <div class="col-sm-9 col-sm-offset-1 booth" [class.booth-user-icon]="!imageSrc" >
+        <canvas #canvasEl></canvas>
       </div>
     </div>
 

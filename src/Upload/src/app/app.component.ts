@@ -1,3 +1,4 @@
+import { FileService } from './file.service';
 import { SafeUrl } from '@angular/platform-browser/public_api';
 import { Component, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -13,7 +14,7 @@ export class AppComponent {
       this.inputFileElement.addEventListener('change', this.handleFile);
     }
   }
-
+  @ViewChild("canvasEl") public canvasEl: any;
   public imageSrc: SafeUrl;
   public isSubmitted: boolean;
   public fileSelected: boolean;
@@ -24,14 +25,17 @@ export class AppComponent {
   private file: File;
 
   private sanitizer: DomSanitizer;
+  private fileService: FileService;
 
-  constructor(sanitizer: DomSanitizer) {
+  constructor(sanitizer: DomSanitizer, fileService: FileService) {
     this.sanitizer = sanitizer;
+    this.fileService = fileService;
   }
 
   public submit() {
     //Submit to api
     //then
+
     this.setupSubmitMessage();
   }
 
@@ -63,13 +67,46 @@ export class AppComponent {
 
     this.file = this.inputFileElement.files[0];
     this.fileSelected = true;
+    this.processFile();
+
+    
 
     var reader = new FileReader();
+    
     reader.onload = this.onLoadFile;
     reader.readAsDataURL(this.file);
+
+
   }
 
-  private onLoadFile = (ev: any) => {
-    this.imageSrc = this.sanitizer.bypassSecurityTrustStyle(`url(${ev.target.result})`);
-  };
+  private onLoadFile(ev: any){
+    console.log(ev);
+  }
+
+  private processFile = () => {
+    this.fileService.processFile(this.file)
+      .then((result: any) => {
+        console.log('file upload response', result);
+        this.imageSrc = this.sanitizer.bypassSecurityTrustStyle(`url('data:image/png;base64, ${result.image}')`);
+
+        var img = document.createElement("img");
+        img.src = `data:image/jpg;base64, ${result.image}`;
+        let cv = this.canvasEl.nativeElement;
+        cv.height = img.height;
+        cv.width = img.width;
+        let cx = cv.getContext('2d');
+        //cv.setTransform(1, 0, 0, 1, img.width / 2, img.height / 2);
+        cx.translate(img.width / 2, img.height / 2);
+        cx.rotate(Math.PI / 2);
+        cx.drawImage(img, -(img.width / 2), -(img.height / 2));
+        cx.save();
+
+      }).catch((error) => {
+        console.log('file processing failed', error);
+      });
+  }
+
+  // private onLoadFile = (ev: any) => {
+  //   this.imageSrc = this.sanitizer.bypassSecurityTrustStyle(`url(${ev.target.result})`);
+  // };
 }
