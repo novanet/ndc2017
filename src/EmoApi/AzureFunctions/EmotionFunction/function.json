@@ -17,5 +17,7 @@
       "direction": "out"
     }
   ],
-  "disabled": false
+  "disabled": false,
+  "scriptFile": "..\\bin\\AzureFunctions.dll",
+  "entryPoint": "Novanet.Emotion.Run"
 }
