@@ -2,11 +2,6 @@
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": { 
-        "documentdbname": 
-        {
-            "type": "string",
-            "defaultValue": "ndc2017emotions"
-        },
         "blobStorageAccountName": 
         {
             "type": "string",
@@ -21,6 +16,11 @@
         {
             "type": "string",
             "defaultValue": "ndc2017emotionapi"
+        },
+        "highscoreApiPostEmotionsUri":
+        {
+            "type": "string",
+            "defaultValue": "http://novanet-ndc-highscore.azurewebsites.net/api/emotions"
         },
         "functionAppName":
         {
@@ -91,32 +91,6 @@
                     "keySource": "Microsoft.Storage"
                 },
                 "accessTier": "Hot"
-            }
-        },
-        {
-            "name": "[parameters('documentdbname')]",
-            "type": "Microsoft.DocumentDB/databaseAccounts",
-            "apiVersion": "2015-04-08",
-            "location": "[resourceGroup().location]",
-            "tags": {},
-            "properties": 
-            {
-                "name": "[parameters('documentdbname')]",
-                // "consistencyPolicy": 
-                // {
-                //     "defaultConsistencyLevel": "Strong"
-                //     // "maxStalenessPrefix": "integer",
-                //     // "maxIntervalInSeconds": "integer"
-                // },
-                "locations": 
-                [
-                    {
-                        "locationName": "[resourceGroup().location]",
-                        "failoverPriority": "0"
-                    }
-                ],
-                "databaseAccountOfferType": "Standard"
-                // "ipRangeFilter": "string"
             }
         },
         {
@@ -205,18 +179,18 @@
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('functionAppServicePlanName'))]",
                 "siteConfig": {
                     "comments": "alwaysOn requires Standard Tier App Service Plan",
-                    "alwaysOn": true,
+                    "alwaysOn": false,
                     "appSettings": [
                         { "name": "FUNCTIONS_EXTENSION_VERSION", "value": "~1" },
                         { "name": "Project", "value": "src/EmoApi/AzureFunctions/" },
                         { "name": "AzureWebJobsStorage", "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('functionAppStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('functionAppStorageAccountName')), '2015-05-01-preview').key1,';')]" },
                         { "name": "AzureWebJobsDashboard", "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('functionAppStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('functionAppStorageAccountName')), '2015-05-01-preview').key1,';')]" },
+                        { "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING", "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('functionAppStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('functionAppStorageAccountName')), '2015-05-01-preview').key1,';')]" },
+                        { "name": "WEBSITE_CONTENTSHARE", "value": "[toLower(parameters('functionAppName'))]" },
                         { "name": "storageAccountConnectionString", "Value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('blobStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('blobStorageAccountName')), '2015-05-01-preview').key1,';')]"},
                         { "name": "storageAccountContainerUri", "value": "[concat('https://',parameters('blobStorageAccountName'),'.blob.core.windows.net/',parameters('blobStorageContainerName'))]" },
-                        { "name": "documentDbConnectionString", "value": "[concat('AccountEndpoint=https://', parameters('documentdbname'), '.documents.azure.com:443/;AccountKey=',listkeys(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('documentdbname')), '2016-03-31').primaryMasterKey,';')]"},
-                        { "name": "documentDbUri", "value": "[concat('https://', parameters('documentdbname'), '.documents.azure.com:443/')]"},
-                        { "name": "documentDbKey", "value": "[listkeys(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('documentdbname')), '2016-03-31').primaryMasterKey]"},
-                        { "name": "emotionApiKey", "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('emotionApiName')), '2016-02-01-preview').key1]", "dependsOn": "[resourceId('Microsoft.Web/sites/sourcecontrols', parameters('functionAppName'), 'web')]" }
+                        { "name": "emotionApiKey", "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('emotionApiName')), '2016-02-01-preview').key1]", "dependsOn": "[resourceId('Microsoft.Web/sites/sourcecontrols', parameters('functionAppName'), 'web')]" },
+                        { "name": "highscoreApiPostEmotionsUri", "value": "[parameters('highscoreApiPostEmotionsUri')]" }
                     ]
                     // "cors": {
                     //     "allowedOrigins": [
@@ -230,21 +204,6 @@
                 "[resourceId('Microsoft.Web/serverfarms', parameters('functionAppServicePlanName'))]"
             ],
             "resources": [
-                // {
-                //     "apiVersion": "2015-08-01",
-                //     "name": "appsettings",
-                //     "type": "config",
-                //     "dependsOn": [
-                //         "[resourceId('Microsoft.Web/Sites', parameters('functionAppName'))]",
-                //         "[resourceId('Microsoft.Web/Sites/sourcecontrols', parameters('functionAppName'), 'web')]",
-                //         "[resourceId('Microsoft.Storage/storageAccounts', parameters('functionAppStorageAccountName'))]"
-                //     ],
-                //     "properties": {
-                //         "FUNCTIONS_EXTENSION_VERSION": "~1",
-                //         "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('functionAppStorageAccountName'), ';AccountKey=', listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('functionAppStorageAccountName')), '2015-05-01-preview').key1)]",
-                //         "AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('functionAppStorageAccountName'), ';AccountKey=', listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('functionAppStorageAccountName')), '2015-05-01-preview').key1)]"
-                //     }
-                // },
                 {
                     "apiVersion": "2015-08-01",
                     "name": "web",
