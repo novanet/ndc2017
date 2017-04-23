@@ -6,15 +6,6 @@
       "direction": "in",
       "path": "incomingphotos/{name}",
       "connection": "storageAccountConnectionString"
-    },
-    {
-      "type": "documentDB",
-      "name": "$return",
-      "databaseName": "outDatabase",
-      "collectionName": "emotionResults",
-      "createIfNotExists": true,
-      "connection": "documentDbConnectionString",
-      "direction": "out"
     }
   ],
   "disabled": false,
