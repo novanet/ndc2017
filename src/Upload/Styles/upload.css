@@ -1,0 +1,49 @@
+body{
+    padding: 10px;
+}
+
+img {
+    width: 100%;
+}
+
+svg{
+    max-width: 100%;
+    height: auto;
+}
+
+.float-right{
+    float:right;
+}
+
+.booth{
+    border: dashed 2px #008766;
+    height: 480px;
+    padding: 10px;
+    background-position: 50% 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    left: 5%;
+}
+
+.booth-user-icon{
+    background-image: url(/styles/images/user.png);
+    background-size: 80%;
+}
+
+input[type=file]{
+    visibility: hidden;
+}
+
+.button {
+    background: #008766;
+    border-radius: 0;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    margin: 20px 0 0 0;
+    width: 100%;
+}
+
+.submit-message{
+    text-align: center;
+}

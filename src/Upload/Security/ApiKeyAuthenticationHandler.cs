@@ -1,18 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Upload.Security
 {
-    public interface IApiKeyValidator
-    {
-        Task<bool> ValidateAsync(string apiKey);
-    }
-
     public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthenticationOptions>
     {
         private IApiKeyValidator _validator;

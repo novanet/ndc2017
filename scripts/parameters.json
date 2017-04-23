@@ -4,11 +4,11 @@
     "parameters": {
         "documentdbname": 
         {
-            "value": "ndcemotions"
+            "value": "ndc2017emotions"
         },
         "blobStorageAccountName": 
         {
-            "value": "ndcphotos"
+            "value": "ndc2017photos"
         },
         "blobStorageContainerName": 
         {
@@ -16,19 +16,19 @@
         },
         "emotionApiName": 
         {
-            "value": "ndcemotionapi"
+            "value": "ndc2017emotionapi"
         },
         "functionAppName":
         {
-            "value": "ndcemotionapifunction"
+            "value": "ndc2017emoapifunc"
         },
         "functionAppServicePlanName":
         {
-            "value": "ndcappserviceplan"
+            "value": "ndc2017appservplan"
         },
         "functionAppStorageAccountName":
         {
-            "value": "ndcfunctionappstorageacc"
+            "value": "ndc2017funcappstoracc"
         },
         "functionAppSourceCodeRepositoryURL": {
             "value": "https://github.com/novanet/ndc2017.git"

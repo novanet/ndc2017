@@ -5,12 +5,12 @@
         "documentdbname": 
         {
             "type": "string",
-            "defaultValue": "ndcemotions"
+            "defaultValue": "ndc2017emotions"
         },
         "blobStorageAccountName": 
         {
             "type": "string",
-            "defaultValue": "ndcphotos"
+            "defaultValue": "ndc2017photos"
         },
         "blobStorageContainerName": 
         {
@@ -20,22 +20,22 @@
         "emotionApiName": 
         {
             "type": "string",
-            "defaultValue": "ndcemotionapi"
+            "defaultValue": "ndc2017emotionapi"
         },
         "functionAppName":
         {
             "type": "string",
-            "defaultValue": "ndcemotionapifunction"
+            "defaultValue": "ndc2017emotionapifunction"
         },
         "functionAppServicePlanName":
         {
             "type": "string",
-            "defaultValue": "ndcappserviceplan"
+            "defaultValue": "ndc2017appserviceplan"
         },
         "functionAppStorageAccountName":
         {
             "type": "string",
-            "defaultValue": "ndcfunctionappstorageacc"
+            "defaultValue": "ndc2017functionappstorageacc"
         },
         "functionAppSourceCodeRepositoryURL": {
             "type": "string",
