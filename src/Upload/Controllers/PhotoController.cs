@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.WindowsAzure.Storage;
 using System;
 using System.Threading.Tasks;
+using Upload.database;
 
 namespace Upload.Controllers
 {
@@ -11,7 +13,7 @@ namespace Upload.Controllers
     [Authorize(ActiveAuthenticationSchemes = "apikey")]
     public class PhotoController : Controller
     {
-        [HttpPost("{userId}")]
+        [HttpPost("{userId}")] 
         public async Task<IActionResult> Post(int userId, IFormFile file)
         {
 
@@ -20,8 +22,27 @@ namespace Upload.Controllers
                 return BadRequest("Action accepts only requests containing a single file");
             }
 
+            using (var db = new NdcContext())
+            {
+                var user = await db
+                                .User
+                                .Include(u => u.Photos)
+                                .FirstOrDefaultAsync(u => u.Id == userId);
+                if (user == null)
+                    return NotFound("User not in database");
+
+                var photoId = await StoreToBlob(file);
+                user.Photos.Add(new Photo { Id = photoId, UserId = userId });
+                await db.SaveChangesAsync();
+
+                return CreatedAtRoute("PhotoLink", new { photoId }, photoId);
+            }
+        }
+
+        private async Task<Guid> StoreToBlob(IFormFile file)
+        {
             var storageAccount = CloudStorageAccount.Parse(
-                Environment.GetEnvironmentVariable("CUSTOMCONNSTR_EmoStorage")                
+                Environment.GetEnvironmentVariable("CUSTOMCONNSTR_EmoStorage")
             );
 
             var blobClient = storageAccount.CreateCloudBlobClient();
@@ -32,11 +53,11 @@ namespace Upload.Controllers
             var blockBlob = container.GetBlockBlobReference(photoId.ToString());
             await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
 
-            return CreatedAtRoute("PhotoLink", new { photoId }, photoId);
+            return photoId;
         }
 
         [HttpGet("{PhotoId}", Name = "PhotoLink")]
-        public async Task<IActionResult> Get(Guid photoId)
+        public IActionResult Get(Guid photoId)
         {
             
             return Ok();
