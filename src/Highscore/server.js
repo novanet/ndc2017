@@ -84,35 +84,35 @@ router.route('/emotions')
                     val: req.body.photoId
                 },
                 anger: {
-                    type: sql.NUMBER,
+                    type: sql.NVarChar,
                     val: req.body.anger
                 },
                 contempt: {
-                    type: sql.NUMBER,
+                    type: sql.NVarChar,
                     val: req.body.contempt
                 },
                 disgust: {
-                    type: sql.NUMBER,
+                    type: sql.NVarChar,
                     val: req.body.disgust
                 },
                 fear: {
-                    type: sql.NUMBER,
+                    type: sql.NVarChar,
                     val: req.body.fear
                 },
                 happiness: {
-                    type: sql.NUMBER,
+                    type: sql.NVarChar,
                     val: req.body.happiness
                 },
                 neutral: {
-                    type: sql.NUMBER,
+                    type: sql.NVarChar,
                     val: req.body.neutral
                 },
                 sadness: {
-                    type: sql.NUMBER,
+                    type: sql.NVarChar,
                     val: req.body.sadness
                 },
                 surprise: {
-                    type: sql.NUMBER,
+                    type: sql.NVarChar,
                     val: req.body.surprise
                 }
             }
