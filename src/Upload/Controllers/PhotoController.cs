@@ -31,29 +31,31 @@ namespace Upload.Controllers
                 if (user == null)
                     return NotFound("User not in database");
 
-                var photoId = await StoreToBlob(file);
-                user.Photos.Add(new Photo { Id = photoId, UserId = userId });
+                var (photoId, blobUri) = await StoreToBlob(file);
+                user.Photos.Add(new Photo { Id = photoId, UserId = userId, BlobUri = blobUri });
                 await db.SaveChangesAsync();
 
                 return CreatedAtRoute("PhotoLink", new { photoId }, photoId);
             }
         }
 
-        private async Task<Guid> StoreToBlob(IFormFile file)
+        private async Task<(Guid photoId, string blobUri)> StoreToBlob(IFormFile file)
         {
             var storageAccount = CloudStorageAccount.Parse(
                 Environment.GetEnvironmentVariable("CUSTOMCONNSTR_EmoStorage")
             );
-
+            
             var blobClient = storageAccount.CreateCloudBlobClient();
 
             var container = blobClient.GetContainerReference("incomingphotos");
 
             var photoId = Guid.NewGuid();
-            var blockBlob = container.GetBlockBlobReference(photoId.ToString());
+            var ext = file.Name.EndsWith(".png") ? "png" : "jpg";
+            var fileName = $"{photoId.ToString()}.{ext}";
+            var blockBlob = container.GetBlockBlobReference(fileName);
             await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
 
-            return photoId;
+            return (photoId, $"{storageAccount.BlobEndpoint}/incomingphotos/{fileName}");
         }
 
         [HttpGet("{PhotoId}", Name = "PhotoLink")]

@@ -30,6 +30,7 @@ namespace Upload.database
             builder.Entity<Photo>(p =>
             {
                 p.Property(e => e.Id).ForSqlServerHasColumnType("uniqueidentifier");
+                p.Property(e => e.BlobUri).HasMaxLength(200).IsUnicode(false);
             });
         }
 
