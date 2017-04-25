@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-app.all('*', function(req, res, next) {
+app.all('*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', 'OPTIONS,POST');
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
@@ -72,13 +72,13 @@ router.get('/highscore', function(req, res) {
     });
 });
 router.route('/emotions')
-    .post(function(req, res) {
+    .post(function (req, res) {
         // Add emotions			
 
         sql.execute({
-            query: 
-				'INSERT INTO [dbo].[Emotions]([PhotoId],[Anger],[Contempt],[Disgust],[Fear],[Happiness],[Neutral],[Sadness],[Surprise], [Added]) ' +
-                'VALUES (@photoId, @anger, @contempt, @disgust, @fear, @happiness, @neutral, @sadness, @surprise, GETDATE())',
+            query:
+            'INSERT INTO [dbo].[Emotions]([PhotoId],[Anger],[Contempt],[Disgust],[Fear],[Happiness],[Neutral],[Sadness],[Surprise], [Added]) ' +
+            'VALUES (@photoId, @anger, @contempt, @disgust, @fear, @happiness, @neutral, @sadness, @surprise, GETDATE())',
             params: {
                 photoId: {
                     type: sql.UNIQUEIDENTIFIER,
@@ -117,11 +117,11 @@ router.route('/emotions')
                     val: req.body.surprise
                 }
             }
-        }).then(function() {
+        }).then(function () {
             res.json({
                 success: true
             });
-        }).catch(function(error) {
+        }).catch(function (error) {
             res.json({
                 userId: req.body.userId,
                 body: req.body,
@@ -138,9 +138,9 @@ app.use('/api', router);
 //Serve web
 app.use('/', express.static(__dirname));
 
-app.get('/',function(req,res){
-  res.header('Content-Type', 'text/html; charset=utf-8');
-  res.sendFile('index.html');
+app.get('/', function (req, res) {
+    res.header('Content-Type', 'text/html; charset=utf-8');
+    res.sendFile('index.html');
 });
 
 // START THE SERVER
