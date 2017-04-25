@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Globalization;
 
 namespace Novanet {
     public class Emotion {
@@ -21,34 +22,40 @@ namespace Novanet {
             var blobUri = Environment.GetEnvironmentVariable("storageAccountContainerUri", EnvironmentVariableTarget.Process) + "/" + name;
             
             var firstEmotion = emotions.FirstOrDefault();
-
+            
             var emotionOutput = new
             {
                 photoId = name,
                 blobUri = blobUri,
-                anger = firstEmotion.Scores?.Anger ?? 0,
-                contempt = firstEmotion.Scores?.Contempt ?? 0,
-                disgust = firstEmotion.Scores?.Disgust ?? 0,
-                fear = firstEmotion.Scores?.Fear ?? 0,
-                happiness = firstEmotion.Scores?.Happiness ?? 0,
-                neutral = firstEmotion.Scores?.Neutral ?? 0,
-                sadness = firstEmotion.Scores?.Sadness ?? 0,
-                surprise = firstEmotion.Scores?.Surprise ?? 0,
+                anger = ConvertEmotion(firstEmotion.Scores?.Anger),
+                contempt = ConvertEmotion(firstEmotion.Scores?.Contempt),
+                disgust = ConvertEmotion(firstEmotion.Scores?.Disgust),
+                fear = ConvertEmotion(firstEmotion.Scores?.Fear),
+                happiness = ConvertEmotion(firstEmotion.Scores?.Happiness),
+                neutral = ConvertEmotion(firstEmotion.Scores?.Neutral),
+                sadness = ConvertEmotion(firstEmotion.Scores?.Sadness),
+                surprise = ConvertEmotion(firstEmotion.Scores?.Surprise),
             };
-
-            var converted = JsonConvert.SerializeObject(emotionOutput);
-            log.Info(converted);
-
+            
             var highscoreApiUri = Environment.GetEnvironmentVariable("highscoreApiPostEmotionsUri", EnvironmentVariableTarget.Process);
-            var result = await PostResult(highscoreApiUri, emotionOutput);
+            var result = await PostResult(highscoreApiUri, emotionOutput, log);
             log.Info(result);
         }
 
-        private static async Task<string> PostResult(string uri, dynamic contents)
+        private static string ConvertEmotion(float? emotion)
+        {
+            if (emotion == null)
+                return "0";
+            
+            return emotion.Value.ToString("0.##########");
+        }
+
+        private static async Task<string> PostResult(string uri, dynamic contents, TraceWriter log)
         {
             using (var client = new HttpClient())
             {
                 var json = JsonConvert.SerializeObject(contents);
+                log.Info(json);
                 var requestData = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync(uri, requestData);
