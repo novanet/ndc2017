@@ -55,7 +55,7 @@ namespace Upload.Controllers
             var blockBlob = container.GetBlockBlobReference(fileName);
             await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
 
-            return (photoId, $"{storageAccount.BlobEndpoint}/incomingphotos/{fileName}");
+            return (photoId, $"{storageAccount.BlobEndpoint}incomingphotos/{fileName}");
         }
 
         [HttpGet("{PhotoId}", Name = "PhotoLink")]
