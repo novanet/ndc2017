@@ -29,7 +29,8 @@ GO
 
 CREATE TABLE [dbo].[Photo](
 	[Id] [uniqueidentifier] NOT NULL,
-	[UserId] [int] NOT NULL,
+	[BlobUri] [varchar](200) NOT NULL,
+	[UserId] [int] NOT NULL,	
  CONSTRAINT [PK_Photo] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
