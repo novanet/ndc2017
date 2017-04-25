@@ -1,4 +1,4 @@
-﻿// BASE SETUP
+// BASE SETUP
 // =============================================================================
 var express = require('express'); // call express
 var app = express(); // define our app using express
@@ -49,7 +49,7 @@ var router = express.Router();
 router.get('/highscore', function(req, res) {
     sql.execute({
         query: 
-			'SELECT Emotion, [Rank], U.[Name] as [User], Score, P.Id AS [Image] FROM ( ' +
+			'SELECT Emotion, [Rank], U.[Name] as [User], Score, P.BlobUri FROM ( ' +
 				'SELECT \'Anger\' AS Emotion, RANK() OVER (ORDER BY Anger DESC) AS [Rank], PhotoId, Anger AS Score FROM dbo.[Emotions] WHERE PhotoId IN (SELECT Id FROM dbo.Photo) GROUP BY PhotoId, Anger UNION ALL ' +
 				'SELECT \'Contempt\' AS Emotion, RANK() OVER (ORDER BY Contempt DESC) AS [Rank], PhotoId, Contempt AS Score FROM dbo.[Emotions] WHERE PhotoId IN (SELECT Id FROM dbo.Photo) GROUP BY PhotoId, Contempt UNION ALL ' +
 				'SELECT \'Disgust\' AS Emotion, RANK() OVER (ORDER BY Disgust DESC) AS [Rank], PhotoId, Disgust AS Score FROM dbo.[Emotions] WHERE PhotoId IN (SELECT Id FROM dbo.Photo) GROUP BY PhotoId, Disgust UNION ALL ' +
@@ -62,6 +62,7 @@ router.get('/highscore', function(req, res) {
             'INNER JOIN dbo.[Photo] P ON P.Id = A.PhotoId ' +
             'INNER JOIN dbo.[User] U ON U.Id = P.UserId ' +
             'WHERE [Rank] <= 3 ' +
+			'AND LEN(P.BlobUri) > 1 ' +
             'ORDER BY Emotion, [Rank], U.[Name] '
     }).then(function(results) {
         res.send(results);
