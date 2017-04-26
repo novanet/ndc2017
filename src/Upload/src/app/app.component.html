@@ -1,43 +1,63 @@
 <div class="container-fluid">
-<div class="row">
-  <div class="col-sm-2">
-    <img src="/Styles/images/novanet-logo.svg" />
-  </div>
-<div class="float-right">
-  <div (click)="reset()">
-    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-  </div>
-</div>
+    <div class="row">
+        <div class="col-sm-2">
+            <img src="/Styles/images/novanet-logo.svg" />
+        </div>
+        <div class="float-right">
+            <div (click)="reset()">
+                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="container-fluid">
-<div class="row">
-  <div class="col-sm-8 col-sm-offset-2">
     <div class="row">
-      <div class="col-sm-9 col-sm-offset-1 booth" [class.booth-user-icon]="!imageSrc" [style.background-image]="imageSrc">
-      </div>
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="row">
+                <div class="col-sm-9 col-sm-offset-1 booth" [class.booth-user-icon]="!fileSelected" [style.background-image]="imageSrc">
+                    <canvas #canvasEl></canvas>
+                </div>
+            </div>
+
+            <div *ngIf="!isSubmitted" class="col-sm-6 col-sm-offset-3">
+                <button type="button" class="button" (click)="captureImage()">Ta bilde</button>
+                <input type="file" #inputFile accept="image/*" />
+
+                <div *ngIf="isRunningRecognition">
+                    Processing image..
+                </div>
+                </div>
+            <div *ngIf="!isSubmitted" class="col-sm-12">
+
+                <div *ngIf="fileSelected && !isRunningRecognition && contestantData && contestantData.isExisting && !confirmItsMe">
+                    <h3>Is this you?</h3>
+                    <p>Name: {{contestantData.name}}</p>
+                    <p>Email: {{contestantData.email}}</p>
+                    <button class="button half" (click)="itsMe()">Yes</button>
+                    <button class="button half" (click)="notMe()">No</button>
+                </div>
+
+                <div *ngIf="fileSelected && !isRunningRecognition && contestantData && contestantData.isExisting && confirmItsMe" class="input-group">
+                    <button type="button" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email">Submit!</button>
+                </div>
+
+                <div *ngIf="fileSelected && !isRunningRecognition && contestantData && !contestantData.isExisting" class="input-group">
+                    <label>Name: <input type="text" [(ngModel)]="name" class="form-control" /></label>
+                    <label>Email: <input type="email" [(ngModel)]="email" class="form-control" /></label>
+                    <label>Company: <input type="text" [(ngModel)]="company" class="form-control" /></label>
+                    <label>Twtter handle: <input type="text" [(ngModel)]="twitterHandle" class="form-control" /></label>
+                    <button type="button" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email">Submit!</button>
+
+                </div>
+            </div>
+
+            <div *ngIf="isSubmitted" class="row submit-message">
+                <div class="col-sm-12">
+                    <h3>Thanks for contributing!</h3>
+                    <p><small>Welcome back.</small></p>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div *ngIf="!isSubmitted" class="col-sm-6 col-sm-offset-3">
-      <button type="button" class="button" (click)="captureImage()">Ta bilde</button>
-      <input type="file" #inputFile accept="image/*" />
-
-      <div *ngIf="fileSelected" class="input-group">
-        <p>Ditt navn</p>
-       <input type="text" [(ngModel)]="name" class="form-control" />
-        <p>Din epost</p>
-        <input type="email" [(ngModel)]="email" class="form-control" />
-        <button type="button" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email">Send inn</button>
-
-      </div>
-    </div>
-
-    <div *ngIf="isSubmitted" class="row submit-message">
-      <div class="col-sm-12">
-        <h3>Takk for ditt bidrag!</h3>
-        <p><small>Velkommen tilbake en annen gang.</small></p>
-      </div>
-    </div>
-  </div>
-</div>
 </div>
