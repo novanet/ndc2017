@@ -5,32 +5,26 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing.Imaging;
+using Upload.Utilities;
 
 namespace Upload
 {
     public class RecognizerApiController : Controller
     {
+        private readonly IImageRotator _imageRotator;
+
+        public RecognizerApiController(IImageRotator imageRotator)
+        {
+            _imageRotator = imageRotator;
+        }
+
         [Route("api/recognizer/image")]
         public IActionResult ProcessImage(IFormFile file)
         {
             var contestantData = new Contestant();
 
-            var reader = new BinaryReader(file.OpenReadStream());
-            var bytes = reader.ReadBytes((int)file.Length);
-
-            var bitmapImg = (Image)new Bitmap(file.OpenReadStream());
-            var containsOrientationId = bitmapImg.PropertyIdList.Contains(0x0112);
-
-            if (containsOrientationId)
-            {
-                var item = bitmapImg.GetPropertyItem(0x0112);
-                var rotation = GetRotateFlipTypeByExifOrientationData(item.Value[0]);
-                bitmapImg.RotateFlip(rotation);
-                bitmapImg.RemovePropertyItem(0x0112);
-            }
-
-            var byteArray = ImageToByteArray(bitmapImg);
-            var imageBase64 = Convert.ToBase64String(byteArray);
+            //var image = _imageRotator.RotateImage(file);
+            var imageBase64 = _imageRotator.RotateImageToBase64(file);
             contestantData.Base64Image = imageBase64;
 
             //Do facial recognition   
@@ -40,6 +34,8 @@ namespace Upload
             //             //contestantData.IsExisting = true;
             //             // existingContestantData.Name = someresponse.Name;
             //             // existingContestantData.Email = someresponse.Email;
+            //             // existingContestantData.Company = someresponse.Company;
+            //             // existingContestantData.TwitterHandle = someresponse.TwitterHandle;
 
             //         //}
 

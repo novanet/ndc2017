@@ -44,8 +44,22 @@ input[type=file]{
     width: 100%;
 }
 
+.button .half{
+    width: 50%;
+}
+
 .submit-message{
     text-align: center;
+}
+
+label{
+    width: 48%;
+    float: left;
+}
+
+label:nth-child(even)
+{
+    float: right;
 }
 
 canvas{
