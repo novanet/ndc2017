@@ -13,7 +13,7 @@
     <div class="container" ng-app="app" ng-controller="controller as vm">
         <div class="row" style="padding: 40px;" ng-if="!vm.isBusyLoading" ng-cloak>
             <section ng-if="vm.slideShow.length">
-                <div class="col-lg-12 text-center">
+                <div class="col-lg-6 text-center">
                     <div class="imageslide">
                         <div class="slider-content">
                             <h1>
@@ -29,10 +29,15 @@
                             </h1>
                             <img height="400" ng-src="{{vm.slideShow[vm.currentSlideShowPage-1].BlobUri}}">
                             <br>
-                            {{vm.currentSlideShowPage}}/{{vm.slideShow.length}}
+							<h2>{{vm.slideShow[vm.currentSlideShowPage-1].User}}</h2>
                         </div>
                     </div>
                 </div>
+				<div class="col-lg-6 text-center">
+					<h1>Sist lagt til</h1>
+					<img height="400" ng-src="{{vm.lastPhoto.BlobUri}}"><br>
+					<h5>{{vm.lastPhoto.Name}}<br>{{vm.lastPhoto.Added}}</h5>					
+				</div>
             </section>
             <section ng-if="vm.highscore.length">
                 <div class="col-lg-12 text-center">

@@ -46,6 +46,23 @@ var port = process.env.PORT || 3000;
 // ===================================================================================
 var router = express.Router();
 
+router.get('/lastPhoto', function(req, res) {
+    sql.execute({
+        query: 
+	'SELECT TOP 1 E.*, P.BlobUri, U.[Name]' +
+	'FROM dbo.[Emotions] E ' + 		
+	'INNER JOIN dbo.[Photo] P ON P.Id = E.PhotoId ' +
+	'INNER JOIN dbo.[User] U ON U.Id = P.UserId ' +            
+	'WHERE LEN(P.BlobUri) > 1 ' +
+	'ORDER BY E.Added DESC '           
+    }).then(function(results) {
+        res.send(results);
+    }).catch(function(error) {
+        res.json(error);
+        throw error;
+    });
+});
+
 router.get('/highscore', function(req, res) {
     sql.execute({
         query: 

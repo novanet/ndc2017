@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Upload.database;
@@ -76,6 +78,24 @@ namespace Upload.Controllers
                 return Ok(result);
             }
         }
+
+        [HttpGet("ByPhotoId/{photoId}")]
+        public IActionResult ByPhotoId(Guid photoId)
+        {
+            
+            using (var db = new NdcContext())
+            {
+                var result = db.User
+                    .Include(u => u.Photos)
+                    .Where(u => u.Photos.Any(p => p.Id == photoId))
+                    .SingleOrDefault();
+                if (result == null)
+                    return NotFound();
+
+                return Ok(result);
+            }
+        }
+
 
     }
 }

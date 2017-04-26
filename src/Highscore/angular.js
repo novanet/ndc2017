@@ -39,6 +39,11 @@
             .finally(function() {
                 vm.isBusyLoading = false;
             });
+			
+		dataservice.getNewestPhoto()
+			.then(function(result){
+				vm.lastPhoto = result[0];			
+			});		
 
 		function startSlideshow(){
 			  var slideTimer =
@@ -52,12 +57,22 @@
 
     function dataservice($q, $http) {
         return {
-            getHighscore: getHighscore
+            getHighscore: getHighscore,
+			getNewestPhoto: getNewestPhoto
         }
 
         function getHighscore() {
             return $q(function(resolve, reject) {
                 $http.get('http://novanet-ndc-highscore.azurewebsites.net/api/highscore')
+                    .then(function(response) {
+                        resolve(response.data);
+                    });
+            });
+        }
+		
+		function getNewestPhoto() {
+            return $q(function(resolve, reject) {
+                $http.get('http://novanet-ndc-highscore.azurewebsites.net/api/lastPhoto')
                     .then(function(response) {
                         resolve(response.data);
                     });
