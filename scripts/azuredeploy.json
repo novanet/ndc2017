@@ -30,7 +30,7 @@
         "functionAppServicePlanName":
         {
             "type": "string",
-            "defaultValue": "ndc2017appserviceplan"
+            "defaultValue": "ndc2017consumptplan"
         },
         "functionAppStorageAccountName":
         {
@@ -106,27 +106,6 @@
             "properties": {},
             "dependsOn": []
         },
-        {
-            "comments": "Generalized from resource: '/subscriptions/64aa2c64-0643-46e6-b55f-3e37a345f405/resourceGroups/NDC2017/providers/Microsoft.Web/serverfarms/ndc2017appservplan'.",
-            "type": "Microsoft.Web/serverfarms",
-            "sku": {
-                "name": "F1",
-                "tier": "Free",
-                "size": "F1",
-                "family": "F",
-                "capacity": 0
-            },
-            "kind": "app",
-            "name": "[Parameters('functionAppServicePlanName')]",
-            "apiVersion": "2015-08-01",
-            "location": "[resourceGroup().location]",
-            "tags": {},
-            "properties": {
-                "name": "[Parameters('functionAppServicePlanName')]",
-                "numberOfWorkers": 0
-            },
-            "dependsOn": []
-        },
         // {
         //     "comments": "App Service Plan for the function app - only necessary if always on should be used",
         //     "type": "Microsoft.Web/serverfarms",
@@ -142,18 +121,18 @@
         //         "numberOfWorkers": 1
         //     }
         // },
-        // {
-        //     "comments": "Consumption Plan for the function app - is scaled on demand by the platform",
-        //     "type": "Microsoft.Web/serverfarms",
-        //     "apiVersion": "2015-04-01",
-        //     "name": "[Parameters('functionAppServicePlanName')]",
-        //     "location": "[resourceGroup().location]",
-        //     "properties": {
-        //         "name": "[Parameters('functionAppServicePlanName')]",
-        //         "computeMode": "Dynamic",
-        //         "sku": "Dynamic"
-        //     }
-        // },
+        {
+            "comments": "Consumption Plan for the function app - is scaled on demand by the platform",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2015-04-01",
+            "name": "[Parameters('functionAppServicePlanName')]",
+            "location": "North Europe",
+            "properties": {
+                "name": "[Parameters('functionAppServicePlanName')]",
+                "computeMode": "Dynamic",
+                "sku": "Dynamic"
+            }
+        },
         {
             "comments": "Storage Account for the function app",
             "type": "Microsoft.Storage/storageAccounts",
