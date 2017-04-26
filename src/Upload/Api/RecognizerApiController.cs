@@ -23,7 +23,6 @@ namespace Upload
         {
             var contestantData = new Contestant();
 
-            //var image = _imageRotator.RotateImage(file);
             var imageBase64 = _imageRotator.RotateImageToBase64(file);
             contestantData.Base64Image = imageBase64;
 
@@ -41,39 +40,5 @@ namespace Upload
 
             return Ok(contestantData);
         }
-
-        private byte[] ImageToByteArray(Image imageIn)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                imageIn.Save(memoryStream, ImageFormat.Jpeg);
-                return memoryStream.ToArray();
-            }
-        }
-
-        public static RotateFlipType GetRotateFlipTypeByExifOrientationData(int orientation)
-        {
-            switch (orientation)
-            {
-                case 1:
-                default:
-                    return RotateFlipType.RotateNoneFlipNone;
-                case 2:
-                    return RotateFlipType.RotateNoneFlipX;
-                case 3:
-                    return RotateFlipType.Rotate180FlipNone;
-                case 4:
-                    return RotateFlipType.Rotate180FlipX;
-                case 5:
-                    return RotateFlipType.Rotate90FlipX;
-                case 6:
-                    return RotateFlipType.Rotate90FlipNone;
-                case 7:
-                    return RotateFlipType.Rotate270FlipX;
-                case 8:
-                    return RotateFlipType.Rotate270FlipNone;
-            }
-        }
-
     }
 }

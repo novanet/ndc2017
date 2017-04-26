@@ -13,7 +13,7 @@ export class UserService {
     }
 
     public createUser(name: string, email: string, company: string, twitterHandle: string): Promise<any> {
-        let headers = new Headers({ 'Authorization': 'Trondheimsnatt', 'Content-Type': 'application/json' });
+        let headers = new Headers({ 'Authorization': '<apikey_here>', 'Content-Type': 'application/json' });
         let data = {
             'name': name,
             'email': email,
