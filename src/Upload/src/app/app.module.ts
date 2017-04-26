@@ -1,4 +1,4 @@
-import { FileService } from './file.service';
+import { RecognizerService } from './recognizer.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +15,7 @@ import { AppComponent } from './app.component';
     FormsModule,
     HttpModule
   ],
-  providers: [FileService],
+  providers: [RecognizerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

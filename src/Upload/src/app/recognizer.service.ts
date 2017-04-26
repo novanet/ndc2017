@@ -4,7 +4,7 @@ import { Promise } from 'es6-promise';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
-export class FileService {
+export class RecognizerService {
 
     private http: Http;    
     constructor(http: Http) { 
@@ -14,8 +14,7 @@ export class FileService {
     public processFile(file: File): Promise<any> {
         let form = new FormData();
         form.append('file', file);
-
-        return this.http.post('/api/image/processimage', form).toPromise().then((response: any) => {
+        return this.http.post('/api/recognizer/image', form).toPromise().then((response: any) => {
             return Promise.resolve(JSON.parse(response._body));
         });
     }
