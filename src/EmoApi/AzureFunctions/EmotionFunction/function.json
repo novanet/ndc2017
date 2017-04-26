@@ -1,0 +1,14 @@
+{
+  "bindings": [
+    {
+      "name": "myBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "incomingphotos/{name}",
+      "connection": "storageAccountConnectionString"
+    }
+  ],
+  "disabled": false,
+  "scriptFile": "..\\bin\\AzureFunctions.dll",
+  "entryPoint": "Novanet.Emotion.Run"
+}

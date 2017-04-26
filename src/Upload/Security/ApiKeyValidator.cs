@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace Upload.Security
@@ -6,7 +7,7 @@ namespace Upload.Security
     {
         public Task<bool> ValidateAsync(string apiKey)
         {
-            return Task.FromResult(true);
+            return Task.FromResult(apiKey == Environment.GetEnvironmentVariable("APPSETTING_ApiKey"));
         }
     }
 }
