@@ -54,7 +54,7 @@ router.get('/lastPhoto', function(req, res) {
 	'INNER JOIN dbo.[Photo] P ON P.Id = E.PhotoId ' +
 	'INNER JOIN dbo.[User] U ON U.Id = P.UserId ' +            
 	'WHERE LEN(P.BlobUri) > 1 ' +
-	'ORDER BY E.When DESC'           
+	'ORDER BY E.Added DESC '           
     }).then(function(results) {
         res.send(results);
     }).catch(function(error) {
