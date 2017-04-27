@@ -17,10 +17,25 @@
             "type": "string",
             "defaultValue": "ndc2017emotionapi"
         },
+        "faceApiName": 
+        {
+            "type": "string",
+            "defaultValue": "ndc2017faceapi"
+        },
         "highscoreApiPostEmotionsUri":
         {
             "type": "string",
             "defaultValue": "http://novanet-ndc-highscore.azurewebsites.net/api/emotions"
+        },
+        "userApiBaseUrl":
+        {
+            "type": "string",
+            "defaultValue": "http://ndc2017.azurewebsites.net"
+        },
+        "userApiKey":
+        {
+            "type": "string",
+            "defaultValue": "ThisIsSecret"
         },
         "functionAppName":
         {
@@ -190,7 +205,9 @@
                         { "name": "storageAccountConnectionString", "Value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('blobStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('blobStorageAccountName')), '2015-05-01-preview').key1,';')]"},
                         { "name": "storageAccountContainerUri", "value": "[concat('https://',parameters('blobStorageAccountName'),'.blob.core.windows.net/',parameters('blobStorageContainerName'))]" },
                         { "name": "emotionApiKey", "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('emotionApiName')), '2016-02-01-preview').key1]", "dependsOn": "[resourceId('Microsoft.Web/sites/sourcecontrols', parameters('functionAppName'), 'web')]" },
-                        { "name": "highscoreApiPostEmotionsUri", "value": "[parameters('highscoreApiPostEmotionsUri')]" }
+                        { "name": "highscoreApiPostEmotionsUri", "value": "[parameters('highscoreApiPostEmotionsUri')]" },
+                        { "name": "userApiBaseUrl", "value": "[parameters('userApiBaseUrl')]" },
+                        { "name": "userApiKey", "value": "[parameters('userApiKey')]" }
                     ]
                     // "cors": {
                     //     "allowedOrigins": [

@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Upload.Security;
+using Upload.Utilities;
 
 namespace Upload
 {
@@ -31,6 +32,7 @@ namespace Upload
             // Add framework services.
             services.AddMvc();
             services.AddTransient<IApiKeyValidator, ApiKeyValidator>();
+            services.AddTransient<IImageRotator, ImageRotator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

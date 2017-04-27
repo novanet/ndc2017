@@ -1,3 +1,6 @@
+import { IContestantData } from './Models/IContestantData';
+import { RecognizerService } from './recognizer.service';
+import { UserService } from './user.service';
 import { SafeUrl } from '@angular/platform-browser/public_api';
 import { Component, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -14,24 +17,40 @@ export class AppComponent {
     }
   }
 
-  public imageSrc: SafeUrl;
   public isSubmitted: boolean;
   public fileSelected: boolean;
+  public isRunningRecognition: boolean;
+  public imageSrc: any;
+  public contestantData: IContestantData;
+  public confirmItsMe: boolean;
 
   public name: string;
   public email: string;
+  public company: string;
+  public twitterHandle: string;
+
   private inputFileElement: HTMLInputElement;
   private file: File;
 
   private sanitizer: DomSanitizer;
+  private recognizerService: RecognizerService;
+  private userService: UserService;
 
-  constructor(sanitizer: DomSanitizer) {
+  constructor(sanitizer: DomSanitizer, recognizerService: RecognizerService, userService: UserService) {
     this.sanitizer = sanitizer;
+    this.recognizerService = recognizerService;
+    this.userService = userService;
   }
 
   public submit() {
-    //Submit to api
-    //then
+      this.userService.createUser(this.name, this.email, this.company, this.twitterHandle)
+          .then((response) => {
+              debugger;
+              console.log('create user', response);
+          }, (error) => {
+              debugger;
+              console.log('createuser failed', error);
+          });
     this.setupSubmitMessage();
   }
 
@@ -48,13 +67,24 @@ export class AppComponent {
     this.file = null;
     this.name = null;
     this.email = null;
+    this.confirmItsMe = false;
     this.inputFileElement.value = null;
-    this.imageSrc = null;
     this.fileSelected = false;
+    this.contestantData = null;
+    this.imageSrc = null;
   }
 
   public captureImage() {
+      this.reset();
     this.inputFileElement.click();
+  }
+
+  public notMe() {
+      this.contestantData.isExisting = false;
+  }
+
+  public itsMe() {
+      this.confirmItsMe = true;
   }
 
   private handleFile = (ev: Event) => {
@@ -63,13 +93,18 @@ export class AppComponent {
 
     this.file = this.inputFileElement.files[0];
     this.fileSelected = true;
-
-    var reader = new FileReader();
-    reader.onload = this.onLoadFile;
-    reader.readAsDataURL(this.file);
+      this.processFileOnServer(this.file)
   }
 
-  private onLoadFile = (ev: any) => {
-    this.imageSrc = this.sanitizer.bypassSecurityTrustStyle(`url(${ev.target.result})`);
-  };
+  private processFileOnServer = (file: File) => {
+    this.isRunningRecognition = true;
+    this.recognizerService.processFile(file)
+      .then((result: IContestantData) => {
+          this.contestantData = result;
+          this.imageSrc = this.sanitizer.bypassSecurityTrustStyle(`url(data:image/jpg;base64,${result.base64Image})`);
+        this.isRunningRecognition = false;
+      }).catch(() => {
+        this.isRunningRecognition = false;
+      });
+  }
 }
