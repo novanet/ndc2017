@@ -29,7 +29,8 @@ export class AppComponent {
   public email: string;
   public company: string;
   public twitterHandle: string;
-
+  public authKey: string;
+  public authIsSet: boolean;
   private inputFileElement: HTMLInputElement;
   private file: File;
 
@@ -45,24 +46,29 @@ export class AppComponent {
     this.photoService = photoService;
   }
 
+  public ngOnInit() {
+     this.authIsSet = sessionStorage.getItem('authKey') !== null;
+  }
+
+  public storeAuth() {
+      sessionStorage.setItem('authKey', this.authKey);
+      this.authIsSet = true;
+      this.authKey = null;
+  }
+
   public submit = () => {
       this.userService.createUser(this.name, this.email, this.company, this.twitterHandle)
-          .then((response) => {
-              debugger;
-              this.postImage(response);
+          .then((userId) => {
+              this.postImage(userId);
           }, (error) => {
-              debugger;
           });
-    this.setupSubmitMessage();
   }
 
   public postImage = (userId: number) => {
       this.photoService.publishImage(userId, this.file)
           .then((response) => {
-              debugger;
               this.setupSubmitMessage();
           }, (error) => {
-              debugger;
           });
   }
 

@@ -13,7 +13,7 @@ export class UserService {
     }
 
     public createUser(name: string, email: string, company: string, twitterHandle: string): Promise<any> {
-        let headers = new Headers({ 'Authorization': '<api-key>', 'Content-Type': 'application/json' });
+        let headers = new Headers({ 'Authorization': sessionStorage['authKey'], 'Content-Type': 'application/json' });
         let data = {
             'name': name,
             'email': email,
