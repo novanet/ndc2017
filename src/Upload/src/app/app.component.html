@@ -11,7 +11,12 @@
     </div>
 </div>
 
-<div class="container-fluid">
+<div *ngIf="!authIsSet">
+    <input type="password" [(ngModel)]="authKey" />
+    <button type="button" (click)="storeAuth()">Save</button>
+ </div>
+
+<div class="container-fluid" *ngIf="authIsSet">
     <div class="row">
         <div class="col-sm-8 col-sm-offset-2">
             <div class="row">

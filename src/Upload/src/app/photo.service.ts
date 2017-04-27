@@ -13,16 +13,16 @@ export class PhotoService {
     }
 
     public publishImage(userId: number, file: File): Promise<any> {
-        let headers = new Headers({ 'Authorization': '<api key>', 'Content-Type': 'application/json; charset=utf-8' });
+        let headers = new Headers({ 'Authorization': sessionStorage['authKey']});
 
         let options = {
             headers: headers
         }
 
-        let form = new FormData();
-        form.append('file', file);
+        let data = new FormData();
+        data.append('file', file);
 
-        return this.http.post(`/api/photo/${userId}`, form, options).toPromise().then((response: any) => {
+        return this.http.post(`/api/photo/${userId}`, data, options).toPromise().then((response: any) => {
             return Promise.resolve(JSON.parse(response._body));
         }).catch(response => {
             return Promise.reject(response._body);
