@@ -14,9 +14,21 @@
         {
             "value": "ndc2017emotionapi"
         },
+        "faceApiName": 
+        {
+            "value": "ndc2017faceapi"
+        },
         "highscoreApiPostEmotionsUri":
         {
             "value": "http://novanet-ndc-highscore.azurewebsites.net/api/emotions"
+        },
+        "userApiBaseUrl":
+        {
+            "value": "http://ndc2017.azurewebsites.net"
+        },
+        "userApiKey":
+        {
+            "value": "Enter key here!"
         },
         "functionAppName":
         {
