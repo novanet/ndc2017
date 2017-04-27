@@ -20,7 +20,7 @@
         "faceApiName": 
         {
             "type": "string",
-            "defaultValue": "ndc2017faceapi"
+            "defaultValue": "NDC2017FaceApi"
         },
         "highscoreApiPostEmotionsUri":
         {
@@ -121,6 +121,19 @@
             "properties": {},
             "dependsOn": []
         },
+        {
+            "comments": "Generalized from resource: '/subscriptions/64aa2c64-0643-46e6-b55f-3e37a345f405/resourceGroups/NDC2017/providers/Microsoft.CognitiveServices/accounts/NDC2017FaceApi'.",
+            "type": "Microsoft.CognitiveServices/accounts",
+            "sku": {
+                "name": "S0"
+            },
+            "kind": "Face",
+            "name": "[parameters('faceApiName')]",
+            "apiVersion": "2016-02-01-preview",
+            "location": "westeurope",
+            "properties": {},
+            "dependsOn": []
+        },
         // {
         //     "comments": "App Service Plan for the function app - only necessary if always on should be used",
         //     "type": "Microsoft.Web/serverfarms",
@@ -167,7 +180,7 @@
             "kind": "functionapp",
             "name": "[parameters('functionAppName')]",
             "apiVersion": "2015-08-01",
-            "location": "[resourceGroup().location]",
+            "location": "North Europe",
             "properties": {
                 "name": "[parameters('functionAppName')]",
                 "hostNames": [
@@ -205,6 +218,7 @@
                         { "name": "storageAccountConnectionString", "Value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('blobStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('blobStorageAccountName')), '2015-05-01-preview').key1,';')]"},
                         { "name": "storageAccountContainerUri", "value": "[concat('https://',parameters('blobStorageAccountName'),'.blob.core.windows.net/',parameters('blobStorageContainerName'))]" },
                         { "name": "emotionApiKey", "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('emotionApiName')), '2016-02-01-preview').key1]", "dependsOn": "[resourceId('Microsoft.Web/sites/sourcecontrols', parameters('functionAppName'), 'web')]" },
+                        { "name": "faceApiKey", "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('faceApiName')), '2016-02-01-preview').key1]", "dependsOn": "[resourceId('Microsoft.Web/sites/sourcecontrols', parameters('functionAppName'), 'web')]" },
                         { "name": "highscoreApiPostEmotionsUri", "value": "[parameters('highscoreApiPostEmotionsUri')]" },
                         { "name": "userApiBaseUrl", "value": "[parameters('userApiBaseUrl')]" },
                         { "name": "userApiKey", "value": "[parameters('userApiKey')]" }
