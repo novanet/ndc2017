@@ -23,38 +23,49 @@ namespace Novanet {
             var faceApiKey = Environment.GetEnvironmentVariable("faceApiKey", EnvironmentVariableTarget.Process);
             var faceServiceClient = new FaceServiceClient(faceApiKey);
 
-            // Detect face, or return
-            var detectedFaces = await faceServiceClient.DetectAsync(imageUri);
-            if (detectedFaces.Length == 0)
-            {
-                log.Warning("No face detected...");
-                return;
-            }
-
-            // Prepare person group
-            await faceServiceClient.CreatePersonGroupIfNotExising(PersonGroupId, "NovanetNDC2017");
-            await faceServiceClient.WaitForPersonGroupStatusNotRunning(PersonGroupId, log);
-
-            // Add user as new person to group, or return existing
-            var user = await GetUserFromBlobName(name);
-            var personId = await faceServiceClient.CreateUserAsPersonIfNotExising(PersonGroupId, user);
-
-            // Add face to person
             try
             {
-                // Using imageUri as user data, so we can display images later if needed
-                await faceServiceClient.AddPersonFaceAsync(PersonGroupId, personId, imageUri, imageUri);
-            }
-            catch (FaceAPIException)
-            {
-                // No face found, not a real person!
-                log.Warning("No face found in image. WHYYYY! THAT WAS THE FIRST THING WE CHECKED!!! OMG.");
-            }
+                // Detect face, or return
+                var detectedFaces = await faceServiceClient.DetectAsync(imageUri);
+                if (detectedFaces.Length == 0)
+                {
+                    log.Warning("No face detected...");
+                    return;
+                }
 
-            // Train the person group
-            await faceServiceClient.TrainPersonGroupAsync(PersonGroupId);
-            var trainingStatus = await faceServiceClient.GetPersonGroupTrainingStatusAsync(PersonGroupId);
-            log.Info($"Started training. Status: {trainingStatus.Status}");
+                // Prepare person group
+                await faceServiceClient.CreatePersonGroupIfNotExising(PersonGroupId, "NovanetNDC2017");
+                await faceServiceClient.WaitForPersonGroupStatusNotRunning(PersonGroupId, log);
+
+                // Add user as new person to group, or return existing
+                var user = await GetUserFromBlobName(name);
+                var personId = await faceServiceClient.CreateUserAsPersonIfNotExising(PersonGroupId, user);
+
+                // Add face to person
+                try
+                {
+                    // Using imageUri as user data, so we can display images later if needed
+                    await faceServiceClient.AddPersonFaceAsync(PersonGroupId, personId, imageUri, imageUri);
+                }
+                catch (FaceAPIException)
+                {
+                    // No face found, not a real person!
+                    log.Warning("No face found in image. WHYYYY! THAT WAS THE FIRST THING WE CHECKED!!! OMG.");
+                }
+
+                // Train the person group
+                await faceServiceClient.TrainPersonGroupAsync(PersonGroupId);
+                var trainingStatus = await faceServiceClient.GetPersonGroupTrainingStatusAsync(PersonGroupId);
+                log.Info($"Started training. Status: {trainingStatus.Status}");
+            }
+            catch (FaceAPIException tooUglyException)
+            {
+                log.Error($"Face API: {tooUglyException.ErrorMessage}");
+                if (tooUglyException.InnerException != null)
+                {
+                    log.Error($"Face API: {tooUglyException.InnerException.Message}");
+                }
+            }
         }
 
         private static async Task<User> GetUserFromBlobName(string name)
