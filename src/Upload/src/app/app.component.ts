@@ -1,6 +1,7 @@
-import { IContestantData } from './Models/IContestantData';
+import { IUser } from './Models/IUser';
 import { RecognizerService } from './recognizer.service';
 import { UserService } from './user.service';
+import { PhotoService } from './photo.service';
 import { SafeUrl } from '@angular/platform-browser/public_api';
 import { Component, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -21,7 +22,7 @@ export class AppComponent {
   public fileSelected: boolean;
   public isRunningRecognition: boolean;
   public imageSrc: any;
-  public contestantData: IContestantData;
+  public user: IUser;
   public confirmItsMe: boolean;
 
   public name: string;
@@ -35,24 +36,36 @@ export class AppComponent {
   private sanitizer: DomSanitizer;
   private recognizerService: RecognizerService;
   private userService: UserService;
+  private photoService: PhotoService;
 
-  constructor(sanitizer: DomSanitizer, recognizerService: RecognizerService, userService: UserService) {
+  constructor(sanitizer: DomSanitizer, recognizerService: RecognizerService, userService: UserService, photoService: PhotoService) {
     this.sanitizer = sanitizer;
     this.recognizerService = recognizerService;
     this.userService = userService;
+    this.photoService = photoService;
   }
 
-  public submit() {
+  public submit = () => {
       this.userService.createUser(this.name, this.email, this.company, this.twitterHandle)
           .then((response) => {
               debugger;
-              console.log('create user', response);
+              this.postImage(response);
           }, (error) => {
               debugger;
-              console.log('createuser failed', error);
           });
     this.setupSubmitMessage();
   }
+
+  public postImage = (userId: number) => {
+      this.photoService.publishImage(userId, this.file)
+          .then((response) => {
+              debugger;
+              this.setupSubmitMessage();
+          }, (error) => {
+              debugger;
+          });
+  }
+
 
   private setupSubmitMessage() {
     this.isSubmitted = true;
@@ -70,7 +83,7 @@ export class AppComponent {
     this.confirmItsMe = false;
     this.inputFileElement.value = null;
     this.fileSelected = false;
-    this.contestantData = null;
+    this.user = null;
     this.imageSrc = null;
   }
 
@@ -80,7 +93,7 @@ export class AppComponent {
   }
 
   public notMe() {
-      this.contestantData.isExisting = false;
+      this.user.isExisting = false;
   }
 
   public itsMe() {
@@ -99,8 +112,8 @@ export class AppComponent {
   private processFileOnServer = (file: File) => {
     this.isRunningRecognition = true;
     this.recognizerService.processFile(file)
-      .then((result: IContestantData) => {
-          this.contestantData = result;
+      .then((result: IUser) => {
+          this.user = result;
           this.imageSrc = this.sanitizer.bypassSecurityTrustStyle(`url(data:image/jpg;base64,${result.base64Image})`);
         this.isRunningRecognition = false;
       }).catch(() => {

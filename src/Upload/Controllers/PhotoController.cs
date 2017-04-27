@@ -14,7 +14,7 @@ namespace Upload.Controllers
     public class PhotoController : Controller
     {
         [HttpPost("{userId}")] 
-        public async Task<IActionResult> Post(int userId, IFormFile file)
+        public async Task<IActionResult> Post(int userId, [FromBody]IFormFile file)
         {
 
             if (file == null)

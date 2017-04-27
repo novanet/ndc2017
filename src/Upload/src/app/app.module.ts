@@ -1,5 +1,6 @@
 import { RecognizerService } from './recognizer.service';
 import { UserService } from './user.service';
+import { PhotoService } from './photo.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -18,7 +19,8 @@ import { AppComponent } from './app.component';
   ],
   providers: [
       RecognizerService,
-      UserService
+      UserService,
+      PhotoService
   ],
   bootstrap: [AppComponent]
 })

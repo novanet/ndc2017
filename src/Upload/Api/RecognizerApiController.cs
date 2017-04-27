@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing.Imaging;
 using Upload.Utilities;
+using Upload.src.app.Models;
 
 namespace Upload
 {
@@ -21,24 +22,24 @@ namespace Upload
         [Route("api/recognizer/image")]
         public IActionResult ProcessImage(IFormFile file)
         {
-            var contestantData = new Contestant();
+            var user = new UserViewModel();
 
             var imageBase64 = _imageRotator.RotateImageToBase64(file);
-            contestantData.Base64Image = imageBase64;
+            user.Base64Image = imageBase64;
 
             //Do facial recognition   
             //         //var someresponse = someService.checkImage(stream);
             //         //if (someresponse != null)
             //         //{
-            //             //contestantData.IsExisting = true;
-            //             // existingContestantData.Name = someresponse.Name;
-            //             // existingContestantData.Email = someresponse.Email;
-            //             // existingContestantData.Company = someresponse.Company;
-            //             // existingContestantData.TwitterHandle = someresponse.TwitterHandle;
+            //             //user.IsExisting = true;
+            //             // user.Name = someresponse.Name;
+            //             // user.Email = someresponse.Email;
+            //             // user.Company = someresponse.Company;
+            //             // user.TwitterHandle = someresponse.TwitterHandle;
 
             //         //}
 
-            return Ok(contestantData);
+            return Ok(user);
         }
     }
 }

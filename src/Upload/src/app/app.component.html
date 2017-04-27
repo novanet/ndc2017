@@ -30,19 +30,19 @@
                 </div>
             <div *ngIf="!isSubmitted" class="col-sm-12">
 
-                <div *ngIf="fileSelected && !isRunningRecognition && contestantData && contestantData.isExisting && !confirmItsMe">
+                <div *ngIf="fileSelected && !isRunningRecognition && user && user.isExisting && !confirmItsMe">
                     <h3>Is this you?</h3>
-                    <p>Name: {{contestantData.name}}</p>
-                    <p>Email: {{contestantData.email}}</p>
+                    <p>Name: {{user.name}}</p>
+                    <p>Email: {{user.email}}</p>
                     <button class="button half" (click)="itsMe()">Yes</button>
                     <button class="button half" (click)="notMe()">No</button>
                 </div>
 
-                <div *ngIf="fileSelected && !isRunningRecognition && contestantData && contestantData.isExisting && confirmItsMe" class="input-group">
+                <div *ngIf="fileSelected && !isRunningRecognition && user && user.isExisting && confirmItsMe" class="input-group">
                     <button type="button" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email">Submit!</button>
                 </div>
 
-                <div *ngIf="fileSelected && !isRunningRecognition && contestantData && !contestantData.isExisting" class="input-group">
+                <div *ngIf="fileSelected && !isRunningRecognition && user && !user.isExisting" class="input-group">
                     <label>Name: <input type="text" [(ngModel)]="name" class="form-control" /></label>
                     <label>Email: <input type="email" [(ngModel)]="email" class="form-control" /></label>
                     <label>Company: <input type="text" [(ngModel)]="company" class="form-control" /></label>
