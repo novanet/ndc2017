@@ -13,7 +13,7 @@ export class PhotoService {
     }
 
     public publishImage(userId: number, file: File): Promise<any> {
-        let headers = new Headers({ 'Authorization': 'Trondheimsnatt', 'Content-Type': 'application/json; charset=utf-8' });
+        let headers = new Headers({ 'Authorization': '<api key>', 'Content-Type': 'application/json; charset=utf-8' });
 
         let options = {
             headers: headers
