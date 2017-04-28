@@ -88,7 +88,7 @@ router.get('/highscore', function(req, res) {
         throw error;
     });
 });
-router.get('/emotions/users/:userId', function (req, res) {
+router.get('/users/:userId', function (req, res) {
 	sql.execute({
 		query: 
 			'SELECT * FROM ( ' +
