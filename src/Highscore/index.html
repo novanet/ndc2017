@@ -36,7 +36,8 @@
 				<div class="col-lg-6 text-center">
 					<h1>Sist lagt til</h1>
 					<img height="400" ng-src="{{vm.lastPhoto.BlobUri}}"><br>
-					<h5>{{vm.lastPhoto.Name}}<br>{{vm.lastPhoto.Added}}</h5>					
+					<h5>{{vm.lastPhoto.Name}}<br>{{vm.lastPhoto.Added}}</h5>
+					<h5>Scoret høyest på: <strong>{{vm.lastPhoto.HighestScore}}</strong></h5>
 				</div>
             </section>
             <section ng-if="vm.highscore.length">
