@@ -94,7 +94,7 @@ router.get('/users/:userId', function (req, res) {
 			'SELECT * FROM ( ' +
 				'SELECT  U.Id AS UserId, U.NAME AS UserName, ' +
                         'E.Anger, E.Contempt, E.Disgust, E.Fear, E.Happiness, E.Neutral, E.Sadness, E.Surprise, ' +
-                        '(SELECT TOP 1 x FROM (VALUES (\'Anger\', Anger), (\'Contempt\', Contempt), (\'Disgust\', Disgust), (\'Fear\', Fear), (\'Happiness\', Happiness), (\'Neutral\', Neutral), (\'Sadness\', Sadness), (\'Surprise\', Surprise)) AS value(x,y) ORDER BY y DESC) as [HigestScore],' +
+                        '(SELECT TOP 1 x FROM (VALUES (\'Anger\', Anger), (\'Contempt\', Contempt), (\'Disgust\', Disgust), (\'Fear\', Fear), (\'Happiness\', Happiness), (\'Neutral\', Neutral), (\'Sadness\', Sadness), (\'Surprise\', Surprise)) AS value(x,y) ORDER BY y DESC) as [HighestScore],' +
                         'RANK() OVER (ORDER BY Anger DESC) AS [RankAnger], ' +
                         'RANK() OVER (ORDER BY Contempt DESC) AS [RankContempt], ' +
                         'RANK() OVER (ORDER BY Disgust DESC) AS [RankDisgust], ' +
