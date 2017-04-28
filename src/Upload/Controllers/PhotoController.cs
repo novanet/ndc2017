@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.WindowsAzure.Storage;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Upload.database;
+using Upload.Utilities;
 
 namespace Upload.Controllers
 {
@@ -13,6 +15,13 @@ namespace Upload.Controllers
     [Authorize(ActiveAuthenticationSchemes = "apikey")]
     public class PhotoController : Controller
     {
+        private readonly IImageRotator _imageRotator;
+
+        public PhotoController(IImageRotator imageRotator)
+        {
+            _imageRotator = imageRotator;
+        }
+
         [HttpPost("{userId}")] 
         public async Task<IActionResult> Post(int userId, IFormFile file)
         {
@@ -53,7 +62,8 @@ namespace Upload.Controllers
             var ext = file.Name.EndsWith(".png") ? "png" : "jpg";
             var fileName = $"{photoId.ToString()}.{ext}";
             var blockBlob = container.GetBlockBlobReference(fileName);
-            await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
+            var image = _imageRotator.RotateImageToByteArray(file);
+            await blockBlob.UploadFromByteArrayAsync(image, 0, image.Length);
 
             return (photoId, $"{storageAccount.BlobEndpoint}incomingphotos/{fileName}");
         }

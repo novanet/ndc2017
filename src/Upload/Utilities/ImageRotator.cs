@@ -9,9 +9,9 @@ namespace Upload.Utilities
 {
     public class ImageRotator : IImageRotator
     {
-        public MemoryStream RotateImage(IFormFile image)
+        public byte[] RotateImageToByteArray(IFormFile image)
         {
-            return ImageStream(DoRotation(image));
+            return ImageByteArray(DoRotation(image));
         }
 
         public string RotateImageToBase64(IFormFile image)
@@ -38,12 +38,12 @@ namespace Upload.Utilities
             return bitmapImg;
         }
 
-        private MemoryStream ImageStream(Image imageIn)
+        private byte[] ImageByteArray(Image image)
         {
             using (var memoryStream = new MemoryStream())
             {
-                imageIn.Save(memoryStream, ImageFormat.Jpeg);
-                return memoryStream;
+                image.Save(memoryStream, ImageFormat.Jpeg);
+                return memoryStream.ToArray();
             }
         }
 
