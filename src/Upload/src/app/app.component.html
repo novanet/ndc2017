@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col-xs-2">
             <img src="/Styles/images/novanet-logo.svg" />
         </div>
         <div class="float-right">
@@ -18,13 +18,13 @@
 
 <div class="container-fluid" *ngIf="authIsSet">
     <div class="row">
-        <div class="col-sm-8 col-sm-offset-2">
+        <div class="col-xs-8 col-xs-offset-2">
             <div class="row">
-                <div class="col-sm-9 col-sm-offset-1 booth" [class.booth-user-icon]="!fileSelected" [style.background-image]="imageSrc">
+                <div class="col-xs-9 col-xs-offset-1 booth" [class.booth-user-icon]="!fileSelected" [style.background-image]="imageSrc">
                 </div>
             </div>
 
-            <div *ngIf="!isSubmitted" class="col-sm-6 col-sm-offset-3">
+            <div *ngIf="!isSubmitted" class="col-xs-6 col-xs-offset-3">
                 <button type="button" class="button" (click)="captureImage()">Ta bilde</button>
                 <input type="file" #inputFile accept="image/*" />
 
@@ -32,7 +32,7 @@
                     Processing image..
                 </div>
                 </div>
-            <div *ngIf="!isSubmitted" class="col-sm-12">
+            <div *ngIf="!isSubmitted" class="col-xs-12">
 
                 <div *ngIf="fileSelected && !isRunningRecognition && user && user.isExisting && !confirmItsMe">
                     <h3>Is this you?</h3>
@@ -50,17 +50,20 @@
                     <label>Name: <input type="text" [(ngModel)]="name" class="form-control" /></label>
                     <label>Email: <input type="email" [(ngModel)]="email" class="form-control" /></label>
                     <label>Company: <input type="text" [(ngModel)]="company" class="form-control" /></label>
-                    <label>Twtter handle: <input type="text" [(ngModel)]="twitterHandle" class="form-control" /></label>
-                    <button type="button" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email">Submit!</button>
-
+                    <label>Twitter handle: <input type="text" [(ngModel)]="twitterHandle" class="form-control" /></label>
+                    <button type="button" *ngIf="!isSubmitting" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email">Submit!</button>
+                    <div class="button submit-text" *ngIf="isSubmitting">Submitting...</div>
                 </div>
             </div>
 
-            <div *ngIf="isSubmitted" class="row submit-message">
-                <div class="col-sm-12">
+                
+
+            <div *ngIf="isSubmitted" class="col-xs-12 submit-message">
                     <h3>Thanks for contributing!</h3>
                     <p><small>Welcome back.</small></p>
-                </div>
+            </div>
+            <div class="col-xs-12 error" *ngIf="error">
+            Oops, something went wrong.
             </div>
         </div>
     </div>

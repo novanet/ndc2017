@@ -44,6 +44,11 @@ input[type=file]{
     width: 100%;
 }
 
+.button:disabled{
+    background: #eee;
+    color: #666;
+}
+
 .button .half{
     width: 50%;
 }
@@ -60,4 +65,16 @@ label{
 label:nth-child(even)
 {
     float: right;
+}
+
+.submit-text{
+    text-align: center;
+    background: #eee;
+    display:inline-block;
+    color: #666;
+}
+
+.error{
+    text-align: center;
+    margin: 10px;
 }
