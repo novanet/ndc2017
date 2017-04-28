@@ -1,7 +1,7 @@
 {
   "bindings": [
     {
-      "name": "myBlob",
+      "name": "imageBlob",
       "type": "blobTrigger",
       "direction": "in",
       "path": "incomingphotos/{name}",

@@ -9,19 +9,18 @@ using System.Net.Http;
 using System.Text;
 using System.Globalization;
 using System.Net.Http.Headers;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Novanet {
     public class IdentificationTraining {
 
-        private const string PersonGroupId = "NovanetNdcStandGroupA";
+        private const string PersonGroupId = "961f1e88-3847-40f4-b06b-9e05f8b87877";
 
-        public static async Task Run(Stream myBlob, string name, TraceWriter log)
+        public static async Task Run(CloudBlockBlob imageBlob, string name, TraceWriter log)
         {
-            log.Info($"C# Blob trigger function Processed blob\n Name:{name} \n Size: {myBlob.Length} Bytes");
-
-            var imageUri = Environment.GetEnvironmentVariable("storageAccountContainerUri", EnvironmentVariableTarget.Process) + "/" + name;          
+            var imageUri = imageBlob.Uri.ToString();
             var faceApiKey = Environment.GetEnvironmentVariable("faceApiKey", EnvironmentVariableTarget.Process);
-            var faceServiceClient = new FaceServiceClient(faceApiKey);
+            var faceServiceClient = new FaceServiceClient(faceApiKey, "https://westeurope.api.cognitive.microsoft.com/face/v1.0");
 
             try
             {
@@ -38,7 +37,13 @@ namespace Novanet {
                 await faceServiceClient.WaitForPersonGroupStatusNotRunning(PersonGroupId, log);
 
                 // Add user as new person to group, or return existing
-                var user = await GetUserFromBlobName(name);
+                var user = await GetUserFromBlobName(imageBlob);
+                if (user == null)
+                {
+                    log.Warning($"User not found for blob name {name}...");
+                    return;
+                }
+
                 var personId = await faceServiceClient.CreateUserAsPersonIfNotExising(PersonGroupId, user);
 
                 // Add face to person
@@ -46,6 +51,7 @@ namespace Novanet {
                 {
                     // Using imageUri as user data, so we can display images later if needed
                     await faceServiceClient.AddPersonFaceAsync(PersonGroupId, personId, imageUri, imageUri);
+                    log.Info($"Added new face to person with userId {user.Id} and name {user.Name}");
                 }
                 catch (FaceAPIException)
                 {
@@ -68,7 +74,7 @@ namespace Novanet {
             }
         }
 
-        private static async Task<User> GetUserFromBlobName(string name)
+        private static async Task<User> GetUserFromBlobName(CloudBlockBlob imageBlob)
         {
             var baseUrl = Environment.GetEnvironmentVariable("userApiBaseUrl", EnvironmentVariableTarget.Process);
             var apiKey = Environment.GetEnvironmentVariable("userApiKey", EnvironmentVariableTarget.Process);
@@ -82,7 +88,8 @@ namespace Novanet {
             {
                 client.BaseAddress = new Uri(baseUrl);
                 client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse(apiKey);
-                var response = await client.GetAsync($"/api/user/byphotoid/{name}");
+                var guid = imageBlob.Name.Split('.')[0];
+                var response = await client.GetAsync($"/api/user/byphotoid/{guid}");
 
                 if (response.IsSuccessStatusCode)
                 {

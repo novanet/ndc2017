@@ -33,11 +33,18 @@ namespace Novanet
         public static async Task WaitForPersonGroupStatusNotRunning(this FaceServiceClient client, string personGroupId, TraceWriter log)
         {
             // WOW, this is ugly, should probably put back on queue?
-            var status = await client.GetPersonGroupTrainingStatusAsync(personGroupId);
-            while (status.Status == Status.Running)
+            try
             {
-                log.Info("Waiting for training...");
-                await Task.Delay(5000);
+                var status = await client.GetPersonGroupTrainingStatusAsync(personGroupId);
+
+                while (status.Status == Status.Running)
+                {
+                    log.Info("Waiting for training...");
+                    await Task.Delay(5000);
+                }
+            } catch (FaceAPIException notTrainedException)
+            {
+                // Throws if never tained before, and I don't care.
             }
         }
     }
