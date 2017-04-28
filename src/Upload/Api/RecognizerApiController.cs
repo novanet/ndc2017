@@ -1,45 +1,143 @@
 using System;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing.Imaging;
 using Upload.Utilities;
 using Upload.src.app.Models;
+using Upload.database;
+using Microsoft.ProjectOxford.Face;
+using Microsoft.ProjectOxford.Face.Contract;
+using System.Threading.Tasks;
+using System.IO;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace Upload
 {
     public class RecognizerApiController : Controller
     {
-        private readonly IImageRotator _imageRotator;
+        private const string PersonGroupId = "961f1e88-3847-40f4-b06b-9e05f8b87877";
 
+        private readonly IImageRotator _imageRotator;
+        private readonly string FaceApiKey;
+        
         public RecognizerApiController(IImageRotator imageRotator)
         {
             _imageRotator = imageRotator;
+            FaceApiKey = Environment.GetEnvironmentVariable("FaceApiKey");
+        }
+
+
+        private MemoryStream ImageStream(Image imageIn)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                imageIn.Save(memoryStream, ImageFormat.Jpeg);
+                return memoryStream;
+            }
+        }
+
+        private Image DoRotation(IFormFile file)
+        {
+            var reader = new BinaryReader(file.OpenReadStream());
+            var bytes = reader.ReadBytes((int)file.Length);
+
+            var bitmapImg = (Image)new Bitmap(file.OpenReadStream());
+            var containsOrientationId = bitmapImg.PropertyIdList.Contains(0x0112);
+
+            if (containsOrientationId)
+            {
+                var item = bitmapImg.GetPropertyItem(0x0112);
+                var rotation = ImageRotator.GetRotateFlipTypeByExifOrientationData(item.Value[0]);
+                bitmapImg.RotateFlip(rotation);
+                bitmapImg.RemovePropertyItem(0x0112);
+            }
+
+            return bitmapImg;
         }
 
         [Route("api/recognizer/image")]
-        public IActionResult ProcessImage(IFormFile file)
+        public async Task<IActionResult> ProcessImage(IFormFile file)
         {
-            var user = new UserViewModel();
+            // Read file to bytes for use with Face API.
+            var reader = new BinaryReader(file.OpenReadStream(), System.Text.Encoding.UTF8, true);
+            var bytes = reader.ReadBytes((int)file.Length);
 
-            var imageBase64 = _imageRotator.RotateImageToBase64(file);
-            user.Base64Image = imageBase64;
+            var result = new UserViewModel();
+            result.IsExisting = false;
+            result.Base64Image = _imageRotator.RotateImageToBase64(file);
+         
+            // Detect faces
+            var faceServiceClient = new FaceServiceClient(FaceApiKey, "https://westeurope.api.cognitive.microsoft.com/face/v1.0");
 
-            //Do facial recognition   
-            //         //var someresponse = someService.checkImage(stream);
-            //         //if (someresponse != null)
-            //         //{
-            //             //user.IsExisting = true;
-            //             // user.Name = someresponse.Name;
-            //             // user.Email = someresponse.Email;
-            //             // user.Company = someresponse.Company;
-            //             // user.TwitterHandle = someresponse.TwitterHandle;
+            Face[] faces = null;
+            try
+            {
+                using (var memoryStream = new MemoryStream(bytes))
+                {
+                    faces = await faceServiceClient.DetectAsync(memoryStream);
+                }
+            }
+            catch (FaceAPIException e)
+            {
+                if(e.ErrorCode == "InvalidImageSize")
+                {
+                    return BadRequest(e.ErrorMessage);
+                }
+                var tmp = e;
+                return NotFound(result);
+            }
 
-            //         //}
+            // Evaluate faces
+            if (faces?.Any() ?? false)
+            {
+                var face = faces[0];
 
-            return Ok(user);
+                // Identify person
+                try
+                {
+                    var faceIdentifications = await faceServiceClient.IdentifyAsync(PersonGroupId, new Guid[] { face.FaceId });
+
+                    var personId = faceIdentifications?
+                        .FirstOrDefault()?
+                        .Candidates?
+                        .FirstOrDefault()?
+                        .PersonId;
+
+                    if(personId == null)
+                    {
+                        return NotFound(result);
+                    }
+
+                    var person = await faceServiceClient.GetPersonAsync(PersonGroupId, personId.Value);
+                    var userId = person.UserData;
+                    
+                    // Load user
+                    using (var db = new NdcContext())
+                    {
+                        var user = db.User.Find(userId);
+                        if(user == null)
+                        {
+                            return NotFound(result);
+                        }
+
+                        result.Company = user.Company;
+                        result.Name = user.Name;
+                        result.Email = user.Email;
+                        result.Id = user.Id;
+                        result.IsExisting = true;
+                        result.TwitterHandle = user.TwitterHandle;
+                        
+                        return Ok(result);
+                    }                    
+                }
+                catch (FaceAPIException)
+                {
+                    return NotFound(result);
+                }
+            }
+
+            return BadRequest("No face found in the image");
         }
     }
 }

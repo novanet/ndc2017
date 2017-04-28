@@ -21,9 +21,6 @@ namespace Upload.Utilities
 
         private Image DoRotation(IFormFile file)
         {
-            var reader = new BinaryReader(file.OpenReadStream());
-            var bytes = reader.ReadBytes((int)file.Length);
-
             var bitmapImg = (Image)new Bitmap(file.OpenReadStream());
             var containsOrientationId = bitmapImg.PropertyIdList.Contains(0x0112);
 
