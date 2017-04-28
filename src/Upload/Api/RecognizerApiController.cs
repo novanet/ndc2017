@@ -28,34 +28,6 @@ namespace Upload
         }
 
 
-        private MemoryStream ImageStream(Image imageIn)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                imageIn.Save(memoryStream, ImageFormat.Jpeg);
-                return memoryStream;
-            }
-        }
-
-        private Image DoRotation(IFormFile file)
-        {
-            var reader = new BinaryReader(file.OpenReadStream());
-            var bytes = reader.ReadBytes((int)file.Length);
-
-            var bitmapImg = (Image)new Bitmap(file.OpenReadStream());
-            var containsOrientationId = bitmapImg.PropertyIdList.Contains(0x0112);
-
-            if (containsOrientationId)
-            {
-                var item = bitmapImg.GetPropertyItem(0x0112);
-                var rotation = ImageRotator.GetRotateFlipTypeByExifOrientationData(item.Value[0]);
-                bitmapImg.RotateFlip(rotation);
-                bitmapImg.RemovePropertyItem(0x0112);
-            }
-
-            return bitmapImg;
-        }
-
         [Route("api/recognizer/image")]
         public async Task<IActionResult> ProcessImage(IFormFile file)
         {
