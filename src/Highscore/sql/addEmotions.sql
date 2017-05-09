@@ -1,0 +1,2 @@
+INSERT INTO [dbo].[Emotions]([PhotoId],[Anger],[Contempt],[Disgust],[Fear],[Happiness],[Neutral],[Sadness],[Surprise], [Added]) 
+VALUES (@photoId, @anger, @contempt, @disgust, @fear, @happiness, @neutral, @sadness, @surprise, GETDATE())
