@@ -13,12 +13,15 @@
 		var slidesTimeIntervalInMs = 3000;
 		var vm = this;
 
-		vm.currentSlideShowPage = 1;
+        vm.currentPage = 1;
+        vm.currentSlideShowPage = 1;
 		vm.emotionHeaderTexts = [];
         vm.error = null;
+        vm.goToPage = goToPage;
 		vm.highscore = [];
         vm.isBusyLoading = true;
-		vm.slideShow = [];
+		//vm.pages = ['Slideshow', 'Highscore', 'LatestPhoto'];
+        vm.slideShow = [];
 
         dataservice.getHighscore()
             .then(function(result) {
@@ -40,9 +43,9 @@
                 vm.isBusyLoading = false;
             });
 			
-		dataservice.getNewestPhoto()
+		dataservice.getLatestPhoto()
 			.then(function(result){
-				vm.lastPhoto = result[0];			
+				vm.latestPhoto = result[0];
 			});		
 
 		function startSlideshow(){
@@ -53,12 +56,16 @@
 				}, slidesTimeIntervalInMs);
 
 		}
+
+        function goToPage(page){
+            vm.currentPage = page;
+        }
     }
 
     function dataservice($q, $http) {
         return {
             getHighscore: getHighscore,
-			getNewestPhoto: getNewestPhoto
+			getLatestPhoto: getLatestPhoto
         }
 
         function getHighscore() {
@@ -70,7 +77,7 @@
             });
         }
 		
-		function getNewestPhoto() {
+		function getLatestPhoto() {
             return $q(function(resolve, reject) {
                 $http.get('http://novanet-ndc-highscore.azurewebsites.net/api/lastPhoto')
                     .then(function(response) {
