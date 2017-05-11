@@ -12,6 +12,7 @@ using Upload.Utilities;
 
 namespace Upload
 {
+    // test
     public class Startup
     {
         public Startup(IHostingEnvironment env)
