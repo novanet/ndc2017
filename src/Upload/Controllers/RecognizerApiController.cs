@@ -11,9 +11,12 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Drawing;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Upload
+namespace Upload.Controllers
 {
+    [Route("api/recognizer")]
+    [Authorize(ActiveAuthenticationSchemes = "apikey")]
     public class RecognizerApiController : Controller
     {
         private const string PersonGroupId = "961f1e88-3847-40f4-b06b-9e05f8b87877";
@@ -28,7 +31,7 @@ namespace Upload
         }
 
 
-        [Route("api/recognizer/image")]
+        [HttpPost("image")]
         public async Task<IActionResult> ProcessImage(IFormFile file)
         {
             // Read file to bytes for use with Face API.
