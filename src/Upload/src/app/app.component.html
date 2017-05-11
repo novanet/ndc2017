@@ -25,7 +25,7 @@
             </div>
 
             <div *ngIf="!isSubmitted" class="col-xs-6 col-xs-offset-3">
-                <button type="button" class="button" (click)="captureImage()">Ta bilde</button>
+                <button type="button" class="button" (click)="captureImage()">Take a photo</button>
                 <input type="file" #inputFile accept="image/*" />
 
                 <div *ngIf="isRunningRecognition">
