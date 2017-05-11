@@ -77,7 +77,7 @@ namespace Upload.Controllers
 
                     if(personId == null)
                     {
-                        return NotFound(result);
+                        return NotFound("person id is null");
                     }
 
                     var person = await faceServiceClient.GetPersonAsync(PersonGroupId, personId.Value);
