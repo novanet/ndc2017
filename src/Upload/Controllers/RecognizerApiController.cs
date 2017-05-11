@@ -56,7 +56,7 @@ namespace Upload.Controllers
                     return BadRequest(e.ErrorMessage);
                 }
                 var tmp = e;
-                return NotFound(result);
+                return NotFound("a lot of stuff");
             }
 
             // Evaluate faces
@@ -89,7 +89,7 @@ namespace Upload.Controllers
                         var user = db.User.Find(userId);
                         if(user == null)
                         {
-                            return NotFound(result);
+                            return NotFound("did not find user " +userId);
                         }
 
                         result.Company = user.Company;
@@ -104,7 +104,7 @@ namespace Upload.Controllers
                 }
                 catch (FaceAPIException)
                 {
-                    return NotFound(result);
+                    return NotFound("faceapi exception");
                 }
             }
 
