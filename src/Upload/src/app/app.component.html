@@ -43,7 +43,7 @@
                 </div>
 
                 <div *ngIf="fileSelected && !isRunningRecognition && user && user.isExisting && confirmItsMe" class="input-group">
-                    <button type="button" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email">Submit!</button>
+                    <button type="button" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email">Submit hei!</button>
                 </div>
 
                 <div *ngIf="fileSelected && !isRunningRecognition && user && !user.isExisting" class="input-group">
@@ -51,7 +51,7 @@
                     <label>Email: <input type="email" [(ngModel)]="email" class="form-control" /></label>
                     <label>Company: <input type="text" [(ngModel)]="company" class="form-control" /></label>
                     <label>Twitter handle: <input type="text" [(ngModel)]="twitterHandle" class="form-control" /></label>
-                    <button type="button" *ngIf="!isSubmitting" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email">Submit!</button>
+                    <button type="button" *ngIf="!isSubmitting" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email">Submit hei!</button>
                     <div class="button submit-text" *ngIf="isSubmitting">Submitting...</div>
                 </div>
             </div>
