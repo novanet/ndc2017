@@ -9,14 +9,10 @@ using Microsoft.ProjectOxford.Face;
 using Microsoft.ProjectOxford.Face.Contract;
 using System.Threading.Tasks;
 using System.IO;
-using System.Drawing.Imaging;
-using System.Drawing;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Upload.Controllers
 {
     [Route("api/recognizer")]
-    [Authorize(ActiveAuthenticationSchemes = "apikey")]
     public class RecognizerApiController : Controller
     {
         private const string PersonGroupId = "961f1e88-3847-40f4-b06b-9e05f8b87877";
