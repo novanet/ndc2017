@@ -25,10 +25,14 @@
         vm.isBusyLoading = true;		
         vm.slideShow = [];
 		
+		//Init		
+		getHighscore();
+		getLatestPhoto();
+				
+		startSlideshow();
+		
 		//Start polling for data for highscore and lastest photo
 		$timeout(pollForData, dataPollingIntervalInMs);		
-		
-		startSlideshow();
 		
 		function pollForData(){
 			getHighscore();
