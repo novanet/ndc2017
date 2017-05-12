@@ -30,7 +30,7 @@
                         <span ng-if="vm.slideShow[vm.currentSlideShowPage-1].Emotion === 'Surprise'">surprised</span>
                     </h1>
                 </div>
-                <div class="main">               
+                <div class="main text-center">               
                     <img height="700" ng-src="{{vm.slideShow[vm.currentSlideShowPage-1].BlobUri}}">                    
                 </div>
 				<div class="footer">
@@ -42,10 +42,13 @@
                 <div class="header text-center">					
                     <h1>Highscore</h1>
                 </div>
-                <div class="col-lg-4" ng-repeat="highscoregroup in vm.highscore">
-                    <h3><strong>{{highscoregroup.emotion}}</strong></h3>
-                    <table class="table table-condensed table-striped">
-                        <tr ng-repeat="list in highscoregroup.highscore" style="font-size:24px">
+                <div class="col-lg-4 well" ng-repeat="highscoregroup in vm.highscore" style="border: 4px solid white;">
+					<div class="text-center">
+						<h3><strong>{{highscoregroup.emotion}}</strong></h3>
+						<img height="250" ng-src="{{highscoregroup.highscore[0].BlobUri}}" style="margin-bottom:20px;">
+					</div>
+                    <table class="table table-condensed table-striped" style="background-color: white;">						
+                        <tr ng-repeat="list in highscoregroup.highscore" style="font-size:14px;" ng-class="{'is-bold': list.Rank === '1'}">
                             <td>{{list.Rank}}.</td>
                             <td>{{list.User}}</td>
                             <td>{{list.Score}}</td>

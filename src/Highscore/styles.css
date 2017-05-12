@@ -10,6 +10,9 @@ html {
 h1 {
     margin: 0;
 }
+.is-bold {
+	font-weight: bold;
+}
 
 #navigation {
     padding: 10px;
