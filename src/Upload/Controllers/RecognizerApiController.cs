@@ -37,7 +37,8 @@ namespace Upload.Controllers
             var result = new UserViewModel();
             result.IsExisting = false;
             result.Base64Image = _imageRotator.RotateImageToBase64(file);
-         
+            return Ok(result);
+
             // Detect faces
             var faceServiceClient = new FaceServiceClient(FaceApiKey, "https://westeurope.api.cognitive.microsoft.com/face/v1.0");
 
