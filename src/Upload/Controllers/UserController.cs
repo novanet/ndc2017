@@ -23,9 +23,13 @@ namespace Upload.Controllers
             using (var db = new NdcContext())
             {
                 var existingUser = db.User
-                    .Any(u => u.Name == user.Name || u.Email == user.Email);
-                if (existingUser)
-                    return BadRequest("User with Name or Email exist");
+                    .FirstOrDefault(u => u.Name == user.Name || u.Email == user.Email);
+                if (existingUser != null)
+                {
+                    if (existingUser.Name != user.Name || (!string.IsNullOrEmpty(user.Email) && existingUser.Email != user.Email) )
+                        return BadRequest("User with Name or Email exist");
+                    return Ok(existingUser.Id);
+                }
                 db.User.Add(user);
                 var id = await db.SaveChangesAsync();
                 return CreatedAtRoute("UserLink", new { id = user.Id }, user.Id);
