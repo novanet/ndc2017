@@ -16,9 +16,7 @@ namespace Upload.Controllers
         public async Task<IActionResult> Post([FromBody]User user)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            if (string.IsNullOrEmpty(user.Name) || string.IsNullOrEmpty(user.Email))
-                return BadRequest("Both Name and Email is required");
+                return BadRequest(ModelState);            
 
             using (var db = new NdcContext())
             {
@@ -33,6 +31,8 @@ namespace Upload.Controllers
                     }
                     return Ok(existingUser.Id);
                 }
+                if (string.IsNullOrEmpty(user.Name) || string.IsNullOrEmpty(user.Email))
+                    return BadRequest("Both Name and Email is required");
                 db.User.Add(user);
                 var id = await db.SaveChangesAsync();
                 return CreatedAtRoute("UserLink", new { id = user.Id }, user.Id);
