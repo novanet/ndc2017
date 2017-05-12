@@ -27,7 +27,10 @@ namespace Upload.Controllers
                 if (existingUser != null)
                 {
                     if (existingUser.Name != user.Name || (!string.IsNullOrEmpty(user.Email) || existingUser.Email != user.Email) )
-                        return BadRequest("User with Name or Email exist");
+                    {
+                        var message = $"User with Name or Email exist. {existingUser.Name} {user.Name} {user.Email} {existingUser.Email}";
+                        return BadRequest(message);
+                    }
                     return Ok(existingUser.Id);
                 }
                 db.User.Add(user);
