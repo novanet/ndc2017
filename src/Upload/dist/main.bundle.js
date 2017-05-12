@@ -107,8 +107,14 @@ var RecognizerService = (function () {
     RecognizerService.prototype.processFile = function (file) {
         var form = new FormData();
         form.append('file', file);
-        return this.http.post('/api/recognizer/image', form).toPromise().then(function (response) {
+        return this.http.post('/api/recognizer/image', form)
+            .toPromise()
+            .then(function (response) {
             return __WEBPACK_IMPORTED_MODULE_2_es6_promise__["Promise"].resolve(JSON.parse(response._body));
+        }, function (response) {
+            console.log("result is " + response);
+            if (response.status === 404)
+                return __WEBPACK_IMPORTED_MODULE_2_es6_promise__["Promise"].resolve(JSON.parse(response._body));
         });
     };
     return RecognizerService;

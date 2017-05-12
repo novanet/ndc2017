@@ -56,7 +56,8 @@ namespace Upload.Controllers
                     return BadRequest(e.ErrorMessage);
                 }
                 var tmp = e;
-                return NotFound("a lot of stuff");
+                result.Message = "Unknown error";
+                return NotFound(result);
             }
 
             // Evaluate faces
@@ -77,7 +78,8 @@ namespace Upload.Controllers
 
                     if(personId == null)
                     {
-                        return NotFound("person id is null");
+                        result.Message = "Did not find person";
+                        return Ok(result);
                     }
 
                     var person = await faceServiceClient.GetPersonAsync(PersonGroupId, personId.Value);
@@ -89,7 +91,8 @@ namespace Upload.Controllers
                         var user = db.User.Find(userId);
                         if(user == null)
                         {
-                            return NotFound("did not find user " +userId);
+                            result.Message = "did not find user " + userId;
+                            return NotFound(result);
                         }
 
                         result.Company = user.Company;
@@ -104,7 +107,8 @@ namespace Upload.Controllers
                 }
                 catch (FaceAPIException)
                 {
-                    return NotFound("faceapi exception");
+                    result.Message = "faceapi exception";
+                    return NotFound(result.Message);
                 }
             }
 

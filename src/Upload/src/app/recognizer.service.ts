@@ -14,8 +14,14 @@ export class RecognizerService {
     public processFile(file: File): Promise<any> {
         let form = new FormData();
         form.append('file', file);
-        return this.http.post('/api/recognizer/image', form).toPromise().then((response: any) => {
-            return Promise.resolve(JSON.parse(response._body));
-        });
+        return this.http.post('/api/recognizer/image', form)
+            .toPromise()
+            .then((response: any) => {
+                return Promise.resolve(JSON.parse(response._body));
+            }, (response: any) => {
+                console.log("result is " + response);
+                if (response.status === 404)
+                    return Promise.resolve(JSON.parse(response._body));
+            });
     }
 }

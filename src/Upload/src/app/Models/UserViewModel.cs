@@ -9,6 +9,7 @@
         public string Company { get; set; }
         public bool IsExisting { get; set; }
         public string Base64Image { get; set; }
+        public string Message { get; set; }
 
     }
 }
