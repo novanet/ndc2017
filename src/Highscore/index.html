@@ -58,18 +58,35 @@
             </section>
 
             <section ng-if="vm.currentPage === 3" class="text-center">
+				<h5 style="position:absolute; top: 0;padding:20px; right:0;">{{vm.latestPhoto.Added}}</h5>
                 <div class="header">
 					<h1>Sist lagt til</h1>                    
                 </div>
-                <div class="main">
-					<img height="600" ng-src="{{vm.latestPhoto.BlobUri}}"><br>
-                </div>
-                <div class="footer">                            
+                <div class="main">					
+					<img height="400" ng-src="{{vm.latestPhoto.BlobUri}}" style="padding-bottom: 40px;">					
 					<h1>{{vm.latestPhoto.Name}}</h1>                    
-					<h2>Scoret høyest på: <strong>{{vm.latestPhoto.HighestScore}}</strong></h2>
-                    <h4 style="position:absolute; bottom: 0;padding:20px; right:0;">{{vm.latestPhoto.Added}}</h4>
-				</div>
-            </section>
+					<h2 style="padding-bottom: 30px;">Scoret høyest på: <strong>{{vm.latestPhoto.HighestScore}}</strong></h2>					
+					<div class="col-lg-4 col-lg-offset-4 text-center">
+						<table class="table table-condensed table-striped text-left">
+							<thead>
+								<tr class="is-bold">
+									<td>Emotion</td><td>Score</td><td>Rank</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr><td>Anger</td><td>{{vm.lastPhoto.AngerScore}}</td><td>{{vm.latestPhoto.RankAnger}}</td></tr>
+								<tr><td>Contempt</td><td>{{vm.lastPhoto.ContemptScore}}</td><td>{{vm.latestPhoto.RankContempt}}</td></tr>
+								<tr><td>Disgust</td><td>{{vm.lastPhoto.DisgustScore}}</td><td>{{vm.latestPhoto.RankDisgust}}</td></tr>
+								<tr><td>Fear</td><td>{{vm.lastPhoto.FearScore}}</td><td>{{vm.latestPhoto.RankFear}}</td></tr>
+								<tr><td>Happiness</td><td>{{vm.lastPhoto.HappinessScore}}</td><td>{{vm.latestPhoto.RankHappiness}}</td></tr>
+								<tr><td>Neutral</td><td>{{vm.lastPhoto.NeutralScore}}</td><td>{{vm.latestPhoto.RankNeutral}}</td></tr>
+								<tr><td>Sadness</td><td>{{vm.lastPhoto.SadnessScore}}</td><td>{{vm.latestPhoto.RankSadness}}</td></tr>
+								<tr><td>Surprise</td><td>{{vm.lastPhoto.SurpriseScore}}</td><td>{{vm.latestPhoto.RankSurprise}}</td></tr>
+							</tbody>
+						</table>					
+					</div>				
+				</div>				
+            </section>					
         </div>
     </div>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
