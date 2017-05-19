@@ -65,6 +65,12 @@ namespace Upload
                 RequestPath = new PathString("/Styles")
             });
 
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "manifest")),
+                RequestPath = new PathString("/manifest")
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
