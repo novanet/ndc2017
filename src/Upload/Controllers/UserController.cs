@@ -24,7 +24,8 @@ namespace Upload.Controllers
                     .FirstOrDefault(u => u.Name == user.Name || u.Email == user.Email);
                 if (existingUser != null)
                 {
-                    if (existingUser.Name != user.Name || (!string.IsNullOrEmpty(user.Email) && existingUser.Email != user.Email) )
+                    if ((!string.IsNullOrEmpty(user.Name) && existingUser.Name.ToLower() != user.Name.ToLower()) 
+                       || (!string.IsNullOrEmpty(user.Email) && existingUser.Email.ToLower() != user.Email.ToLower()) )
                     {
                         var message = $"User with Name or Email exist. {existingUser.Name} {user.Name} {user.Email} {existingUser.Email}";
                         return BadRequest(message);

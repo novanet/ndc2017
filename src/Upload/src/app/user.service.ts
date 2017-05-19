@@ -25,9 +25,9 @@ export class UserService {
         }
 
         return this.http.post('/api/user',data, options).toPromise().then((response:any) => {
-            return Promise.resolve(JSON.parse(response._body));
+            return Promise.resolve(response.json());
         }).catch(response => {
-            return Promise.reject(response._body);
+            return Promise.reject(response.json());
         });
     }
 }

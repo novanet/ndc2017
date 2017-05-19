@@ -17,11 +17,11 @@ export class RecognizerService {
         return this.http.post('/api/recognizer/image', form)
             .toPromise()
             .then((response: any) => {
-                return Promise.resolve(JSON.parse(response._body));
+                return Promise.resolve(response.json());
             }, (response: any) => {
                 console.log("result is " + response);
                 if (response.status === 404)
-                    return Promise.resolve(JSON.parse(response._body));
+                    return Promise.resolve(response.json());
             });
     }
 }
