@@ -135,6 +135,7 @@
     <Content Include="host.json" />
     <Content Include="IdentificationTrainingFunction\project.json" />
     <Content Include="IdentificationTrainingFunction\function.json" />
+    <Content Include="KeepAlive\function.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -150,8 +151,10 @@
     <Compile Include="IdentificationTrainingFunction\FaceServiceClientExtensions.cs" />
     <Compile Include="IdentificationTrainingFunction\run.cs" />
     <Compile Include="IdentificationTrainingFunction\User.cs" />
+    <Compile Include="KeepAlive\run.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
