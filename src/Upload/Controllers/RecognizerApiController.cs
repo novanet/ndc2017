@@ -9,14 +9,10 @@ using Microsoft.ProjectOxford.Face;
 using Microsoft.ProjectOxford.Face.Contract;
 using System.Threading.Tasks;
 using System.IO;
-using System.Drawing.Imaging;
-using System.Drawing;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Upload.Controllers
 {
     [Route("api/recognizer")]
-    [Authorize(ActiveAuthenticationSchemes = "apikey")]
     public class RecognizerApiController : Controller
     {
         private const string PersonGroupId = "961f1e88-3847-40f4-b06b-9e05f8b87877";
@@ -41,7 +37,8 @@ namespace Upload.Controllers
             var result = new UserViewModel();
             result.IsExisting = false;
             result.Base64Image = _imageRotator.RotateImageToBase64(file);
-         
+            return Ok(result);
+
             // Detect faces
             var faceServiceClient = new FaceServiceClient(FaceApiKey, "https://westeurope.api.cognitive.microsoft.com/face/v1.0");
 
@@ -60,6 +57,7 @@ namespace Upload.Controllers
                     return BadRequest(e.ErrorMessage);
                 }
                 var tmp = e;
+                result.Message = "Unknown error";
                 return NotFound(result);
             }
 
@@ -81,7 +79,8 @@ namespace Upload.Controllers
 
                     if(personId == null)
                     {
-                        return NotFound(result);
+                        result.Message = "Did not find person";
+                        return Ok(result);
                     }
 
                     var person = await faceServiceClient.GetPersonAsync(PersonGroupId, personId.Value);
@@ -93,6 +92,7 @@ namespace Upload.Controllers
                         var user = db.User.Find(userId);
                         if(user == null)
                         {
+                            result.Message = "did not find user " + userId;
                             return NotFound(result);
                         }
 
@@ -108,7 +108,8 @@ namespace Upload.Controllers
                 }
                 catch (FaceAPIException)
                 {
-                    return NotFound(result);
+                    result.Message = "faceapi exception";
+                    return NotFound(result.Message);
                 }
             }
 

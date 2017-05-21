@@ -12,9 +12,14 @@ namespace Upload.Controllers
     [Authorize(ActiveAuthenticationSchemes = "apikey")]
     public class LoginController : Controller
     {
-        public IActionResult Post([FromBody]LoginModel model)
+        public IActionResult Get()
         {
-            return Ok($"hello: {model.Password}");
+            return Ok();
         }
+
+        // public IActionResult Post([FromBody]LoginModel model)
+        // {
+        //     return Ok($"hello: {model.Password}");
+        // }
     }
 }

@@ -1,3 +1,4 @@
+import { AuthService } from './auth.service';
 import { IUser } from './Models/IUser';
 import { RecognizerService } from './recognizer.service';
 import { UserService } from './user.service';
@@ -26,6 +27,7 @@ export class AppComponent {
     public user: IUser;
     public confirmItsMe: boolean;
     public error: boolean;
+    public authError: boolean;
 
     public name: string;
     public email: string;
@@ -40,12 +42,14 @@ export class AppComponent {
     private recognizerService: RecognizerService;
     private userService: UserService;
     private photoService: PhotoService;
+    private authService: AuthService;
 
-    constructor(sanitizer: DomSanitizer, recognizerService: RecognizerService, userService: UserService, photoService: PhotoService) {
+    constructor(sanitizer: DomSanitizer, recognizerService: RecognizerService, userService: UserService, photoService: PhotoService, authService: AuthService) {
         this.sanitizer = sanitizer;
         this.recognizerService = recognizerService;
         this.userService = userService;
         this.photoService = photoService;
+        this.authService = authService;
     }
 
     public ngOnInit() {
@@ -53,9 +57,19 @@ export class AppComponent {
     }
 
     public storeAuth() {
-        sessionStorage.setItem('authKey', this.authKey);
-        this.authIsSet = true;
-        this.authKey = null;
+        this.authService.checkAuth(this.authKey)
+            .then((response) => {
+                if (response) {
+                    sessionStorage.setItem('authKey', this.authKey);
+                    this.authError = false;
+                    this.authIsSet = true;
+                    this.authKey = null;
+                }
+                else {
+                    this.authIsSet = false;
+                    this.authError = true;
+                }
+            });
     }
 
     public submit = () => {
@@ -83,10 +97,11 @@ export class AppComponent {
 
     private setupSubmitMessage() {
         this.isSubmitted = true;
+        this.isSubmitting = false;
 
-        setTimeout(() => {
-            this.reset();
-        }, 2000);
+        // setTimeout(() => {
+        //     this.isSubmitted = false;
+        // }, 2000);
     }
 
     public reset() {
@@ -105,9 +120,21 @@ export class AppComponent {
         this.error = false;
     }
 
+    public takeAnother() {
+        this.isSubmitted = false;
+        this.captureImage();
+    }
+
     public captureImage() {
-        this.reset();
-        this.inputFileElement.click();
+        //this.reset();
+        this.isSubmitted = false;
+        this.inputFileElement.value = null;
+        this.fileSelected = false;
+        this.imageSrc = null;
+        
+        setTimeout(() => {
+            this.inputFileElement.click();
+        });
     }
 
     public notMe() {

@@ -11,28 +11,46 @@
     </div>
 </div>
 
-<div *ngIf="!authIsSet">
-    <input type="password" [(ngModel)]="authKey" />
-    <button type="button" (click)="storeAuth()">Save</button>
- </div>
+<div *ngIf="!authIsSet" class="row">
+    <div class="col-xs-4 col-xs-offset-4">
+        <input type="password" [(ngModel)]="authKey" />
+        <button type="button" class="button" (click)="storeAuth()" [disabled]="!authKey">
+        <span *ngIf="!authKey">Provide authKey</span>
+        <span *ngIf="authKey">Save</span>
+        </button>
+    </div>
+    <div class="col-xs-4 col-xs-offset-4 auth-error" *ngIf="authError">
+        Incorrect
+    </div>
+</div>
 
 <div class="container-fluid" *ngIf="authIsSet">
     <div class="row">
         <div class="col-xs-8 col-xs-offset-2">
             <div class="row">
                 <div class="col-xs-9 col-xs-offset-1 booth" [class.booth-user-icon]="!fileSelected" [style.background-image]="imageSrc">
+                    <div class="booth-overlay" *ngIf="isRunningRecognition || isSubmitting || isSubmitted"></div>
+                    <div class="booth-overlay--text" *ngIf="isRunningRecognition">Processing image...</div>
+                    <div class="booth-overlay--text" *ngIf="isSubmitting">Submitting..</div>
+                    <div class="booth-overlay--text submitted" *ngIf="isSubmitted">
+                        <span class="glyphicon glyphicon-thumbs-up"></span> Submitted! <span class="glyphicon glyphicon-thumbs-up"></span>
+                        <button type="button" class="button button--capture" (click)="captureImage()">Take another one</button>
+                        <button type="button" class="button button--capture" (click)="reset()">Reset form</button>
+                    </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-9 col-xs-offset-1 capture">
+                    <button type="button" class="button button--capture" (click)="captureImage()" [disabled]="isSubmitted">Take a photo</button>
+                    <input type="file" #inputFile accept="image/*" capture="camera" />
 
-            <div *ngIf="!isSubmitted" class="col-xs-6 col-xs-offset-3">
-                <button type="button" class="button" (click)="captureImage()">Ta bilde</button>
-                <input type="file" #inputFile accept="image/*" />
-
-                <div *ngIf="isRunningRecognition">
-                    Processing image..
+                    <!--<div *ngIf="isRunningRecognition">
+                        Processing image..
+                    </div>-->
                 </div>
-                </div>
-            <div *ngIf="!isSubmitted" class="col-xs-12">
+            </div>
+            <!--<div *ngIf="!isSubmitted" class="col-xs-12">-->
+                <div class="col-xs-12">
 
                 <div *ngIf="fileSelected && !isRunningRecognition && user && user.isExisting && !confirmItsMe">
                     <h3>Is this you?</h3>
@@ -42,29 +60,30 @@
                     <button class="button half" (click)="notMe()">No</button>
                 </div>
 
-                <div *ngIf="fileSelected && !isRunningRecognition && user && user.isExisting && confirmItsMe" class="input-group">
-                    <button type="button" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email">Submit hei!</button>
+                <div *ngIf="fileSelected && user && user.isExisting && confirmItsMe" class="input-group">
+                    <button type="button" (click)="submit()" class="button" [disabled]="!fileSelected || !name">Submit</button>
                 </div>
 
-                <div *ngIf="fileSelected && !isRunningRecognition && user && !user.isExisting" class="input-group">
+                <!--<div *ngIf="fileSelected user && !user.isExisting" class="input-group">-->
+                    <div class="input-group">
                     <label>Name: <input type="text" [(ngModel)]="name" class="form-control" /></label>
                     <label>Email: <input type="email" [(ngModel)]="email" class="form-control" /></label>
                     <label>Company: <input type="text" [(ngModel)]="company" class="form-control" /></label>
                     <label>Twitter handle: <input type="text" [(ngModel)]="twitterHandle" class="form-control" /></label>
-                    <button type="button" *ngIf="!isSubmitting" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email">Submit hei!</button>
+                    <button type="button" *ngIf="!isSubmitting" (click)="submit()" class="button" [disabled]="!fileSelected || !name || !email || isSubmitted">Submit</button>
                     <div class="button submit-text" *ngIf="isSubmitting">Submitting...</div>
                 </div>
             </div>
 
-                
 
-            <div *ngIf="isSubmitted" class="col-xs-12 submit-message">
-                    <h3>Thanks for contributing!</h3>
-                    <p><small>Welcome back.</small></p>
+
+            <!--<div *ngIf="isSubmitted" class="col-xs-12 submit-message">
+                <h3>Thanks for contributing!</h3>
+                <p><small>Welcome back.</small></p>
             </div>
             <div class="col-xs-12 error" *ngIf="error">
-            Oops, something went wrong.
-            </div>
+                Oops, something went wrong.
+            </div>-->
         </div>
     </div>
 </div>
