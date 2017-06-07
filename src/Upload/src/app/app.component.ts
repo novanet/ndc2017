@@ -27,6 +27,7 @@ export class AppComponent {
     public user: IUser;
     public confirmItsMe: boolean;
     public error: boolean;
+    public errorMessage: string;
     public authError: boolean;
 
     public name: string;
@@ -74,6 +75,7 @@ export class AppComponent {
 
     public submit = () => {
         this.error = false;
+        this.errorMessage = null;
         this.isSubmitting = true;
         this.userService.createUser(this.name, this.email, this.company, this.twitterHandle)
             .then((userId) => {
@@ -81,7 +83,19 @@ export class AppComponent {
             }, (error) => {
                 this.isSubmitting = false;
                 this.error = true;
+                this.errorMessage = this.getErrorMessage(error);
             });
+    }
+
+    private getErrorMessage(error: string) {
+        switch (error) {
+            case 'NameOrEmailMismatch':
+                return 'Incorrect email or name - use the same values as last upload';
+            case 'MissingFields':
+                return 'Name and Email are mandatory';
+            default:
+                return 'Something went wrong - please try again';
+        }
     }
 
     public postImage = (userId: number) => {
@@ -91,6 +105,7 @@ export class AppComponent {
             }, (error) => {
                 this.isSubmitting = false;
                 this.error = true;
+                this.errorMessage = this.getErrorMessage(error);
             });
     }
 
@@ -98,10 +113,6 @@ export class AppComponent {
     private setupSubmitMessage() {
         this.isSubmitted = true;
         this.isSubmitting = false;
-
-        // setTimeout(() => {
-        //     this.isSubmitted = false;
-        // }, 2000);
     }
 
     public reset() {
@@ -118,6 +129,7 @@ export class AppComponent {
         this.user = null;
         this.imageSrc = null;
         this.error = false;
+        this.errorMessage = null;
     }
 
     public takeAnother() {
@@ -126,11 +138,12 @@ export class AppComponent {
     }
 
     public captureImage() {
-        //this.reset();
         this.isSubmitted = false;
         this.inputFileElement.value = null;
         this.fileSelected = false;
         this.imageSrc = null;
+        this.error = false;
+        this.errorMessage = null;
         
         setTimeout(() => {
             this.inputFileElement.click();

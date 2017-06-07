@@ -23,9 +23,9 @@ export class PhotoService {
         data.append('file', file);
 
         return this.http.post(`/api/photo/${userId}`, data, options).toPromise().then((response: any) => {
-            return Promise.resolve(JSON.parse(response._body));
+            return Promise.resolve(response.json());
         }).catch(response => {
-            return Promise.reject(response._body);
+            return Promise.reject(response.text());
         });
     }
 }

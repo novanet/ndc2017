@@ -113,6 +113,9 @@ label:nth-child(even)
 .error{
     text-align: center;
     margin: 10px;
+    color: indianred;
+    border: dashed 1px indianred;
+    padding: 5px;
 }
 
 .auth-error{
