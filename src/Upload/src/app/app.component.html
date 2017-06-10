@@ -64,6 +64,7 @@
                     <button type="button" (click)="submit()" class="button" [disabled]="!fileSelected || !name">Submit</button>
                 </div>
 
+                <p class="error" *ngIf="error">{{errorMessage}}</p>
                 <!--<div *ngIf="fileSelected user && !user.isExisting" class="input-group">-->
                     <div class="input-group">
                     <label>Name: <input type="text" [(ngModel)]="name" class="form-control" /></label>

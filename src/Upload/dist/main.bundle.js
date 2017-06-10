@@ -3,7 +3,7 @@ webpackJsonp([1,3],{
 /***/ 137:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-2\">\r\n            <img src=\"/Styles/images/novanet-logo.svg\" />\r\n        </div>\r\n        <div class=\"float-right\">\r\n            <div (click)=\"reset()\">\r\n                <span class=\"glyphicon glyphicon-refresh\" aria-hidden=\"true\"></span>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div *ngIf=\"!authIsSet\" class=\"row\">\r\n    <div class=\"col-xs-4 col-xs-offset-4\">\r\n        <input type=\"password\" [(ngModel)]=\"authKey\" />\r\n        <button type=\"button\" class=\"button\" (click)=\"storeAuth()\" [disabled]=\"!authKey\">\r\n        <span *ngIf=\"!authKey\">Provide authKey</span>\r\n        <span *ngIf=\"authKey\">Save</span>\r\n        </button>\r\n    </div>\r\n    <div class=\"col-xs-4 col-xs-offset-4 auth-error\" *ngIf=\"authError\">\r\n        Incorrect\r\n    </div>\r\n</div>\r\n\r\n<div class=\"container-fluid\" *ngIf=\"authIsSet\">\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-8 col-xs-offset-2\">\r\n            <div class=\"row\">\r\n                <div class=\"col-xs-9 col-xs-offset-1 booth\" [class.booth-user-icon]=\"!fileSelected\" [style.background-image]=\"imageSrc\">\r\n                    <div class=\"booth-overlay\" *ngIf=\"isRunningRecognition || isSubmitting || isSubmitted\"></div>\r\n                    <div class=\"booth-overlay--text\" *ngIf=\"isRunningRecognition\">Processing image...</div>\r\n                    <div class=\"booth-overlay--text\" *ngIf=\"isSubmitting\">Submitting..</div>\r\n                    <div class=\"booth-overlay--text submitted\" *ngIf=\"isSubmitted\">\r\n                        <span class=\"glyphicon glyphicon-thumbs-up\"></span> Submitted! <span class=\"glyphicon glyphicon-thumbs-up\"></span>\r\n                        <button type=\"button\" class=\"button button--capture\" (click)=\"captureImage()\">Take another one</button>\r\n                        <button type=\"button\" class=\"button button--capture\" (click)=\"reset()\">Reset form</button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <div class=\"col-xs-9 col-xs-offset-1 capture\">\r\n                    <button type=\"button\" class=\"button button--capture\" (click)=\"captureImage()\" [disabled]=\"isSubmitted\">Take a photo</button>\r\n                    <input type=\"file\" #inputFile accept=\"image/*\" capture=\"camera\" />\r\n\r\n                    <!--<div *ngIf=\"isRunningRecognition\">\r\n                        Processing image..\r\n                    </div>-->\r\n                </div>\r\n            </div>\r\n            <!--<div *ngIf=\"!isSubmitted\" class=\"col-xs-12\">-->\r\n                <div class=\"col-xs-12\">\r\n\r\n                <div *ngIf=\"fileSelected && !isRunningRecognition && user && user.isExisting && !confirmItsMe\">\r\n                    <h3>Is this you?</h3>\r\n                    <p>Name: {{user.name}}</p>\r\n                    <p>Email: {{user.email}}</p>\r\n                    <button class=\"button half\" (click)=\"itsMe()\">Yes</button>\r\n                    <button class=\"button half\" (click)=\"notMe()\">No</button>\r\n                </div>\r\n\r\n                <div *ngIf=\"fileSelected && user && user.isExisting && confirmItsMe\" class=\"input-group\">\r\n                    <button type=\"button\" (click)=\"submit()\" class=\"button\" [disabled]=\"!fileSelected || !name\">Submit</button>\r\n                </div>\r\n\r\n                <!--<div *ngIf=\"fileSelected user && !user.isExisting\" class=\"input-group\">-->\r\n                    <div class=\"input-group\">\r\n                    <label>Name: <input type=\"text\" [(ngModel)]=\"name\" class=\"form-control\" /></label>\r\n                    <label>Email: <input type=\"email\" [(ngModel)]=\"email\" class=\"form-control\" /></label>\r\n                    <label>Company: <input type=\"text\" [(ngModel)]=\"company\" class=\"form-control\" /></label>\r\n                    <label>Twitter handle: <input type=\"text\" [(ngModel)]=\"twitterHandle\" class=\"form-control\" /></label>\r\n                    <button type=\"button\" *ngIf=\"!isSubmitting\" (click)=\"submit()\" class=\"button\" [disabled]=\"!fileSelected || !name || !email || isSubmitted\">Submit</button>\r\n                    <div class=\"button submit-text\" *ngIf=\"isSubmitting\">Submitting...</div>\r\n                </div>\r\n            </div>\r\n\r\n\r\n\r\n            <!--<div *ngIf=\"isSubmitted\" class=\"col-xs-12 submit-message\">\r\n                <h3>Thanks for contributing!</h3>\r\n                <p><small>Welcome back.</small></p>\r\n            </div>\r\n            <div class=\"col-xs-12 error\" *ngIf=\"error\">\r\n                Oops, something went wrong.\r\n            </div>-->\r\n        </div>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-2\">\r\n            <img src=\"/Styles/images/novanet-logo.svg\" />\r\n        </div>\r\n        <div class=\"float-right\">\r\n            <div (click)=\"reset()\">\r\n                <span class=\"glyphicon glyphicon-refresh\" aria-hidden=\"true\"></span>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div *ngIf=\"!authIsSet\" class=\"row\">\r\n    <div class=\"col-xs-4 col-xs-offset-4\">\r\n        <input type=\"password\" [(ngModel)]=\"authKey\" />\r\n        <button type=\"button\" class=\"button\" (click)=\"storeAuth()\" [disabled]=\"!authKey\">\r\n        <span *ngIf=\"!authKey\">Provide authKey</span>\r\n        <span *ngIf=\"authKey\">Save</span>\r\n        </button>\r\n    </div>\r\n    <div class=\"col-xs-4 col-xs-offset-4 auth-error\" *ngIf=\"authError\">\r\n        Incorrect\r\n    </div>\r\n</div>\r\n\r\n<div class=\"container-fluid\" *ngIf=\"authIsSet\">\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-8 col-xs-offset-2\">\r\n            <div class=\"row\">\r\n                <div class=\"col-xs-9 col-xs-offset-1 booth\" [class.booth-user-icon]=\"!fileSelected\" [style.background-image]=\"imageSrc\">\r\n                    <div class=\"booth-overlay\" *ngIf=\"isRunningRecognition || isSubmitting || isSubmitted\"></div>\r\n                    <div class=\"booth-overlay--text\" *ngIf=\"isRunningRecognition\">Processing image...</div>\r\n                    <div class=\"booth-overlay--text\" *ngIf=\"isSubmitting\">Submitting..</div>\r\n                    <div class=\"booth-overlay--text submitted\" *ngIf=\"isSubmitted\">\r\n                        <span class=\"glyphicon glyphicon-thumbs-up\"></span> Submitted! <span class=\"glyphicon glyphicon-thumbs-up\"></span>\r\n                        <button type=\"button\" class=\"button button--capture\" (click)=\"captureImage()\">Take another one</button>\r\n                        <button type=\"button\" class=\"button button--capture\" (click)=\"reset()\">Reset form</button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <div class=\"col-xs-9 col-xs-offset-1 capture\">\r\n                    <button type=\"button\" class=\"button button--capture\" (click)=\"captureImage()\" [disabled]=\"isSubmitted\">Take a photo</button>\r\n                    <input type=\"file\" #inputFile accept=\"image/*\" capture=\"camera\" />\r\n\r\n                    <!--<div *ngIf=\"isRunningRecognition\">\r\n                        Processing image..\r\n                    </div>-->\r\n                </div>\r\n            </div>\r\n            <!--<div *ngIf=\"!isSubmitted\" class=\"col-xs-12\">-->\r\n                <div class=\"col-xs-12\">\r\n\r\n                <div *ngIf=\"fileSelected && !isRunningRecognition && user && user.isExisting && !confirmItsMe\">\r\n                    <h3>Is this you?</h3>\r\n                    <p>Name: {{user.name}}</p>\r\n                    <p>Email: {{user.email}}</p>\r\n                    <button class=\"button half\" (click)=\"itsMe()\">Yes</button>\r\n                    <button class=\"button half\" (click)=\"notMe()\">No</button>\r\n                </div>\r\n\r\n                <div *ngIf=\"fileSelected && user && user.isExisting && confirmItsMe\" class=\"input-group\">\r\n                    <button type=\"button\" (click)=\"submit()\" class=\"button\" [disabled]=\"!fileSelected || !name\">Submit</button>\r\n                </div>\r\n\r\n                <p class=\"error\" *ngIf=\"error\">{{errorMessage}}</p>\r\n                <!--<div *ngIf=\"fileSelected user && !user.isExisting\" class=\"input-group\">-->\r\n                    <div class=\"input-group\">\r\n                    <label>Name: <input type=\"text\" [(ngModel)]=\"name\" class=\"form-control\" /></label>\r\n                    <label>Email: <input type=\"email\" [(ngModel)]=\"email\" class=\"form-control\" /></label>\r\n                    <label>Company: <input type=\"text\" [(ngModel)]=\"company\" class=\"form-control\" /></label>\r\n                    <label>Twitter handle: <input type=\"text\" [(ngModel)]=\"twitterHandle\" class=\"form-control\" /></label>\r\n                    <button type=\"button\" *ngIf=\"!isSubmitting\" (click)=\"submit()\" class=\"button\" [disabled]=\"!fileSelected || !name || !email || isSubmitted\">Submit</button>\r\n                    <div class=\"button submit-text\" *ngIf=\"isSubmitting\">Submitting...</div>\r\n                </div>\r\n            </div>\r\n\r\n\r\n\r\n            <!--<div *ngIf=\"isSubmitted\" class=\"col-xs-12 submit-message\">\r\n                <h3>Thanks for contributing!</h3>\r\n                <p><small>Welcome back.</small></p>\r\n            </div>\r\n            <div class=\"col-xs-12 error\" *ngIf=\"error\">\r\n                Oops, something went wrong.\r\n            </div>-->\r\n        </div>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -110,9 +110,9 @@ var PhotoService = (function () {
         var data = new FormData();
         data.append('file', file);
         return this.http.post("/api/photo/" + userId, data, options).toPromise().then(function (response) {
-            return __WEBPACK_IMPORTED_MODULE_2_es6_promise__["Promise"].resolve(JSON.parse(response._body));
+            return __WEBPACK_IMPORTED_MODULE_2_es6_promise__["Promise"].resolve(response.json());
         }).catch(function (response) {
-            return __WEBPACK_IMPORTED_MODULE_2_es6_promise__["Promise"].reject(response._body);
+            return __WEBPACK_IMPORTED_MODULE_2_es6_promise__["Promise"].reject(response.text());
         });
     };
     return PhotoService;
@@ -223,7 +223,7 @@ var UserService = (function () {
         return this.http.post('/api/user', data, options).toPromise().then(function (response) {
             return __WEBPACK_IMPORTED_MODULE_2_es6_promise__["Promise"].resolve(response.json());
         }).catch(function (response) {
-            return __WEBPACK_IMPORTED_MODULE_2_es6_promise__["Promise"].reject(response.json());
+            return __WEBPACK_IMPORTED_MODULE_2_es6_promise__["Promise"].reject(response.text());
         });
     };
     return UserService;
@@ -304,6 +304,7 @@ var AppComponent = (function () {
         var _this = this;
         this.submit = function () {
             _this.error = false;
+            _this.errorMessage = null;
             _this.isSubmitting = true;
             _this.userService.createUser(_this.name, _this.email, _this.company, _this.twitterHandle)
                 .then(function (userId) {
@@ -311,6 +312,7 @@ var AppComponent = (function () {
             }, function (error) {
                 _this.isSubmitting = false;
                 _this.error = true;
+                _this.errorMessage = _this.getErrorMessage(error);
             });
         };
         this.postImage = function (userId) {
@@ -320,6 +322,7 @@ var AppComponent = (function () {
             }, function (error) {
                 _this.isSubmitting = false;
                 _this.error = true;
+                _this.errorMessage = _this.getErrorMessage(error);
             });
         };
         this.handleFile = function (ev) {
@@ -375,12 +378,19 @@ var AppComponent = (function () {
             }
         });
     };
+    AppComponent.prototype.getErrorMessage = function (error) {
+        switch (error) {
+            case 'NameOrEmailMismatch':
+                return 'Incorrect email or name - use the same values as last upload';
+            case 'MissingFields':
+                return 'Name and Email are mandatory';
+            default:
+                return 'Something went wrong - please try again';
+        }
+    };
     AppComponent.prototype.setupSubmitMessage = function () {
         this.isSubmitted = true;
         this.isSubmitting = false;
-        // setTimeout(() => {
-        //     this.isSubmitted = false;
-        // }, 2000);
     };
     AppComponent.prototype.reset = function () {
         this.isSubmitting = false;
@@ -396,6 +406,7 @@ var AppComponent = (function () {
         this.user = null;
         this.imageSrc = null;
         this.error = false;
+        this.errorMessage = null;
     };
     AppComponent.prototype.takeAnother = function () {
         this.isSubmitted = false;
@@ -403,11 +414,12 @@ var AppComponent = (function () {
     };
     AppComponent.prototype.captureImage = function () {
         var _this = this;
-        //this.reset();
         this.isSubmitted = false;
         this.inputFileElement.value = null;
         this.fileSelected = false;
         this.imageSrc = null;
+        this.error = false;
+        this.errorMessage = null;
         setTimeout(function () {
             _this.inputFileElement.click();
         });

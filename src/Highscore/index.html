@@ -25,11 +25,8 @@
                     <h1>
                         The most
                         <span ng-if="vm.slideShow[vm.currentSlideShowPage-1].Emotion === 'Anger'">angry</span>
-                        <span ng-if="vm.slideShow[vm.currentSlideShowPage-1].Emotion === 'Contempt'">contempt</span>
                         <span ng-if="vm.slideShow[vm.currentSlideShowPage-1].Emotion === 'Disgust'">disgusted</span>
                         <span ng-if="vm.slideShow[vm.currentSlideShowPage-1].Emotion === 'Fear'">afraid</span>
-                        <span ng-if="vm.slideShow[vm.currentSlideShowPage-1].Emotion === 'Happiness'">happy</span>
-                        <span ng-if="vm.slideShow[vm.currentSlideShowPage-1].Emotion === 'Neutral'">neutral</span>
                         <span ng-if="vm.slideShow[vm.currentSlideShowPage-1].Emotion === 'Sadness'">sad</span>
                         <span ng-if="vm.slideShow[vm.currentSlideShowPage-1].Emotion === 'Surprise'">surprised</span>
                     </h1>
@@ -79,11 +76,8 @@
 							</thead>
 							<tbody>
 								<tr><td>Anger</td><td>{{vm.latestPhoto.AngerScore}}</td><td class="text-right">{{vm.latestPhoto.RankAnger}}</td></tr>
-								<tr><td>Contempt</td><td>{{vm.latestPhoto.ContemptScore}}</td><td class="text-right">{{vm.latestPhoto.RankContempt}}</td></tr>
 								<tr><td>Disgust</td><td>{{vm.latestPhoto.DisgustScore}}</td><td class="text-right">{{vm.latestPhoto.RankDisgust}}</td></tr>
 								<tr><td>Fear</td><td>{{vm.latestPhoto.FearScore}}</td><td class="text-right">{{vm.latestPhoto.RankFear}}</td></tr>
-								<tr><td>Happiness</td><td>{{vm.latestPhoto.HappinessScore}}</td><td class="text-right">{{vm.latestPhoto.RankHappiness}}</td></tr>
-								<tr><td>Neutral</td><td>{{vm.latestPhoto.NeutralScore}}</td><td class="text-right">{{vm.latestPhoto.RankNeutral}}</td></tr>
 								<tr><td>Sadness</td><td>{{vm.latestPhoto.SadnessScore}}</td><td class="text-right">{{vm.latestPhoto.RankSadness}}</td></tr>
 								<tr><td>Surprise</td><td>{{vm.latestPhoto.SurpriseScore}}</td><td class="text-right">{{vm.latestPhoto.RankSurprise}}</td></tr>
 							</tbody>
