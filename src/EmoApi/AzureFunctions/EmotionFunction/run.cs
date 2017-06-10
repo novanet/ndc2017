@@ -47,7 +47,7 @@ namespace Novanet {
             if (emotion == null)
                 return "0";
             
-            return emotion.Value.ToString("0.##########");
+            return emotion.Value.ToString("0.######");
         }
 
         private static async Task<string> PostResult(string uri, dynamic contents, TraceWriter log)
