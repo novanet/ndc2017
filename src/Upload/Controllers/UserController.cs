@@ -24,14 +24,9 @@ namespace Upload.Controllers
                     return BadRequest("MissingFields");
 
                 var existingUser = db.User
-                    .FirstOrDefault(u => u.Name == user.Name || u.Email == user.Email);
+                    .FirstOrDefault(u => u.Email == user.Email);
                 if (existingUser != null)
                 {
-                    if ((!string.IsNullOrEmpty(user.Name) && existingUser.Name.ToLower() != user.Name.ToLower())
-                       || (!string.IsNullOrEmpty(user.Email) && existingUser.Email.ToLower() != user.Email.ToLower()))
-                    {
-                        return BadRequest("NameOrEmailMismatch");
-                    }
                     return Ok(existingUser.Id);
                 }
 
