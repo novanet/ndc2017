@@ -122,7 +122,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr><td>Anger</td><td>{{vm.latestPhoto.AngerScore}}</td><td class="text-right">{{vm.latestPhoto.RankAnger}}</td></tr>
+								<tr><td>Anger</td><td>{{(vm.latestPhoto.AngerScore*100).toFixed(3}}%</td><td class="text-right">{{vm.latestPhoto.RankAnger}}</td></tr>
 								<tr><td>Disgust</td><td>{{vm.latestPhoto.DisgustScore}}</td><td class="text-right">{{vm.latestPhoto.RankDisgust}}</td></tr>
 								<tr><td>Fear</td><td>{{vm.latestPhoto.FearScore}}</td><td class="text-right">{{vm.latestPhoto.RankFear}}</td></tr>
 								<tr><td>Sadness</td><td>{{vm.latestPhoto.SadnessScore}}</td><td class="text-right">{{vm.latestPhoto.RankSadness}}</td></tr>
