@@ -18,7 +18,8 @@ h1 {
     padding: 10px;
     position: absolute;
     left: 0;
-    margin-left: 50px;   
+    margin-left: 50px;
+    z-index: 1;
 }
 
 .header {
