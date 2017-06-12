@@ -86,7 +86,7 @@
 				</div>				
             </section>					
 		
-		<section ng-if="vm.currentPage === 4">
+		<section ng-if="vm.currentPage === 4" class="text-center">
 			<div class="col-lg-6">
 			<div class="header">
                     <h1>
@@ -106,6 +106,10 @@
                 </div>
 			</div>
 			<div class="col-lg-6">
+						<h5 style="position:absolute; top: 0;padding:20px; right:0;">{{vm.latestPhoto.Added}}</h5>
+                <div class="header">
+					<h1>Latest</h1>                    
+                </div>
 			<div class="main">					
 					<img height="400" ng-src="{{vm.latestPhoto.BlobUri}}" style="padding-bottom: 40px;">					
 					<h1>{{vm.latestPhoto.Name}}</h1>                    
