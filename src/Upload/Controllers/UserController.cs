@@ -20,7 +20,7 @@ namespace Upload.Controllers
 
             using (var db = new NdcContext())
             {
-                if (string.IsNullOrEmpty(user.Name) || string.IsNullOrEmpty(user.Email))
+                if (string.IsNullOrEmpty(user.Email))
                     return BadRequest("MissingFields");
 
                 var existingUser = db.User
@@ -29,6 +29,8 @@ namespace Upload.Controllers
                 {
                     return Ok(existingUser.Id);
                 }
+                if (string.IsNullOrEmpty(user.Name))
+                    return BadRequest("MissingFields");
 
                 db.User.Add(user);
                 var id = await db.SaveChangesAsync();
