@@ -40,3 +40,7 @@ h1 {
     display: block;
     padding: 10px;
 }
+
+.bestRank {
+ background-color: yellow
+}
