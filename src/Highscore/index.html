@@ -11,6 +11,7 @@
 </head>
 <body>
     <div ng-app="app" ng-controller="controller as vm">
+	    <div class="row">
 	    <div class="col-lg-12">
         <div id="navigation">
             <a href ng-click="vm.goToPage(1)">Slideshow</a> | <a href ng-click="vm.goToPage(2)">Highscore</a> | <a href ng-click="vm.goToPage(3)">Latest</a> | <a href ng-click="vm.goToPage(4)">Split</a>
@@ -20,6 +21,7 @@
 				<h1>Loading..</h1>
 			</div>
 		</div>
+		    </div>
 		    </div>
         <div ng-if="!vm.isBusyLoading" ng-cloak>
 			<section ng-if="vm.currentPage === 1 && vm.slideShow.length" class="text-center">
