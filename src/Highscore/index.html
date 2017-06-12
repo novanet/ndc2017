@@ -102,7 +102,7 @@
                     <img height="775" ng-src="{{vm.slideShow[vm.currentSlideShowPage-1].BlobUri}}">                    
                 </div>
 				<div class="footer">
-                    <h1>{{vm.slideShow[vm.currentSlideShowPage-1].User}} ({{vm.slideShow[vm.currentSlideShowPage-1].Score}})</h1>
+                    <h1>{{vm.slideShow[vm.currentSlideShowPage-1].User}} ({{(vm.slideShow[vm.currentSlideShowPage-1].Score*100).toFixed(3)}})</h1>
                 </div>
 			</div>
 			<div class="col-lg-6">
@@ -113,7 +113,7 @@
 			<div class="main">					
 					<img height="475" ng-src="{{vm.latestPhoto.BlobUri}}" style="padding-bottom: 10px;">					
 					<h1>{{vm.latestPhoto.Name}}</h1>                    
-					<h2 style="padding-bottom: 15px;padding-top: 15px;">Highest rank: <strong>{{vm.latestPhoto.HighestScore}}</strong></h2>					
+					<h2 style="padding-bottom: 15px;padding-top: 15px;">Highest score: <strong>{{vm.latestPhoto.HighestScore}}</strong></h2>					
 					<div class="col-lg-10 col-lg-offset-1 text-center">
 						<table class="table table-condensed table-striped text-left" style="font-size: 20px;">
 							<thead>
@@ -123,10 +123,10 @@
 							</thead>
 							<tbody>
 								<tr><td>Anger</td><td>{{(vm.latestPhoto.AngerScore*100).toFixed(3)}}%</td><td class="text-right">{{vm.latestPhoto.RankAnger}}</td></tr>
-								<tr><td>Disgust</td><td>{{vm.latestPhoto.DisgustScore}}</td><td class="text-right">{{vm.latestPhoto.RankDisgust}}</td></tr>
-								<tr><td>Fear</td><td>{{vm.latestPhoto.FearScore}}</td><td class="text-right">{{vm.latestPhoto.RankFear}}</td></tr>
-								<tr><td>Sadness</td><td>{{vm.latestPhoto.SadnessScore}}</td><td class="text-right">{{vm.latestPhoto.RankSadness}}</td></tr>
-								<tr><td>Surprise</td><td>{{vm.latestPhoto.SurpriseScore}}</td><td class="text-right">{{vm.latestPhoto.RankSurprise}}</td></tr>
+								<tr><td>Disgust</td><td>{{(vm.latestPhoto.DisgustScore*100).toFixed(3)}}</td><td class="text-right">{{vm.latestPhoto.RankDisgust}}</td></tr>
+								<tr><td>Fear</td><td>{{(vm.latestPhoto.FearScore*100).toFixed(3)}}</td><td class="text-right">{{vm.latestPhoto.RankFear}}</td></tr>
+								<tr><td>Sadness</td><td>{{(vm.latestPhoto.SadnessScore*100).toFixed(3)}}</td><td class="text-right">{{vm.latestPhoto.RankSadness}}</td></tr>
+								<tr><td>Surprise</td><td>{{(vm.latestPhoto.SurpriseScore*100).toFixed(3)}}</td><td class="text-right">{{vm.latestPhoto.RankSurprise}}</td></tr>
 							</tbody>
 						</table>					
 					</div>				
