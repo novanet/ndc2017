@@ -20,20 +20,17 @@ namespace Upload.Controllers
 
             using (var db = new NdcContext())
             {
-                if (string.IsNullOrEmpty(user.Name) || string.IsNullOrEmpty(user.Email))
+                if (string.IsNullOrEmpty(user.Email))
                     return BadRequest("MissingFields");
 
                 var existingUser = db.User
-                    .FirstOrDefault(u => u.Name == user.Name || u.Email == user.Email);
+                    .FirstOrDefault(u => u.Email == user.Email);
                 if (existingUser != null)
                 {
-                    if ((!string.IsNullOrEmpty(user.Name) && existingUser.Name.ToLower() != user.Name.ToLower())
-                       || (!string.IsNullOrEmpty(user.Email) && existingUser.Email.ToLower() != user.Email.ToLower()))
-                    {
-                        return BadRequest("NameOrEmailMismatch");
-                    }
                     return Ok(existingUser.Id);
                 }
+                if (string.IsNullOrEmpty(user.Name))
+                    return BadRequest("MissingFields");
 
                 db.User.Add(user);
                 var id = await db.SaveChangesAsync();
