@@ -27,14 +27,14 @@ namespace Novanet {
             {
                 photoId = name,
                 blobUri = blobUri,
-                anger = ConvertEmotion(firstEmotion.Scores?.Anger),
-                contempt = ConvertEmotion(firstEmotion.Scores?.Contempt),
-                disgust = ConvertEmotion(firstEmotion.Scores?.Disgust),
-                fear = ConvertEmotion(firstEmotion.Scores?.Fear),
-                happiness = ConvertEmotion(firstEmotion.Scores?.Happiness),
-                neutral = ConvertEmotion(firstEmotion.Scores?.Neutral),
-                sadness = ConvertEmotion(firstEmotion.Scores?.Sadness),
-                surprise = ConvertEmotion(firstEmotion.Scores?.Surprise),
+                anger = ConvertEmotion(firstEmotion?.Scores?.Anger),
+                contempt = ConvertEmotion(firstEmotion?.Scores?.Contempt),
+                disgust = ConvertEmotion(firstEmotion?.Scores?.Disgust),
+                fear = ConvertEmotion(firstEmotion?.Scores?.Fear),
+                happiness = ConvertEmotion(firstEmotion?.Scores?.Happiness),
+                neutral = ConvertEmotion(firstEmotion?.Scores?.Neutral),
+                sadness = ConvertEmotion(firstEmotion?.Scores?.Sadness),
+                surprise = ConvertEmotion(firstEmotion?.Scores?.Surprise),
             };
             
             var highscoreApiUri = Environment.GetEnvironmentVariable("highscoreApiPostEmotionsUri", EnvironmentVariableTarget.Process);
