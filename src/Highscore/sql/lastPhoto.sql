@@ -1,9 +1,12 @@
 SELECT TOP 1
 	P.BlobUri, 
 	U.[Name],
-	E.Anger as 'AngerScore', 	
+	E.Anger as 'AngerScore', 
+    E.Contempt as 'ContemptScore',
 	E.Disgust as 'DisgustScore', 
 	E.Fear as 'FearScore', 		
+    E.Happiness as 'HappinessScore',
+    E.Neutral as 'NeutralScore',
 	E.Sadness as 'SadnessScore', 
 	E.Surprise as 'SurpriseScore',  
 	RANK() OVER (ORDER BY Anger DESC) AS [RankAnger], 
@@ -14,8 +17,11 @@ SELECT TOP 1
 	(SELECT TOP 1 x 
 		 FROM (VALUES 
 			('Anger', Anger), 		
+            ('Contempt', Contempt),
 			('Disgust', Disgust), 
 			('Fear', Fear), 	
+            ('Happiness', Happiness),
+            ('Neutral', Neutral),
 			('Sadness', Sadness), 
 			('Surprise', Surprise)) AS value(x,y)
 		 ORDER BY y DESC) as [HighestScore]
