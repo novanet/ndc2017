@@ -18,8 +18,8 @@
                     <a href ng-click="vm.goToPage(1)">Slideshow</a> | 
                     <!-- <a href ng-click="vm.goToPage(2)">Highscore</a> | --> 
                     <!-- <a href ng-click="vm.goToPage(3)">Latest</a> | -->
-                    <a href ng-click="vm.goToPage(4)">Split1</a> |
-                    <a href ng-click="vm.goToPage(5)">Split2</a>
+                    <a href ng-click="vm.goToPage(4)">Ranked only</a> |
+                    <a href ng-click="vm.goToPage(5)">All</a>
                 </div>
                 <div ng-if="vm.isBusyLoading" class="text-center">
                     <div class="header">
@@ -101,7 +101,7 @@
                     </div>
             </section>
 
-            <section id="Split1" ng-if="vm.currentPage === 4" class="text-center">
+            <section id="Split-Ranked-Only" ng-if="vm.currentPage === 4" class="text-center">
                 <div class="col-lg-6">
                     <div class="header">
                         <h1 style="padding: 20px;">
@@ -125,9 +125,9 @@
                         <h1 style="padding: 20px;paddig-bottom:15px;">Latest</h1>
                     </div>
                     <div class="main">
-                        <img height="900" ng-src="{{vm.latestPhoto.BlobUri}}" style="padding-bottom: 10px;">
-                        <h1 style="padding: 20px;">{{vm.latestPhoto.Name}}</h1>
-                        <h2 style="padding-bottom: 30px;">Highest score: <strong>{{vm.latestPhoto.HighestScore}}</strong></h2>
+                        <img height="900" ng-src="{{vm.latestPhoto.blobUri}}" style="padding-bottom: 10px;">
+                        <h1 style="padding: 20px;">{{vm.latestPhoto.name}}</h1>
+                        <h2 style="padding-bottom: 30px;">Highest score: <strong>{{vm.latestPhoto.highestScore}}</strong></h2>
                         <div class="col-lg-10 col-lg-offset-1 text-center">
                             <table class="table table-condensed table-striped text-left" style="font-size: 30px;">
                                 <thead>
@@ -138,11 +138,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td>Anger</td><td class="text-center">{{(vm.latestPhoto.AngerScore*100).toFixed(3)}}%</td><td class="text-right"><i class="fa fa-star" class="bestRank" ng-if="vm.latestPhoto.RankAnger == 1"></i>&nbsp;&nbsp;{{vm.latestPhoto.RankAnger}}</td></tr>
-                                    <tr><td>Disgust</td><td class="text-center">{{(vm.latestPhoto.DisgustScore*100).toFixed(3)}}%</td><td class="text-right"><i class="fa fa-star" class="bestRank" ng-if="vm.latestPhoto.RankDisgust == 1"></i>&nbsp;&nbsp;{{vm.latestPhoto.RankDisgust}}</td></tr>
-                                    <tr><td>Fear</td><td class="text-center">{{(vm.latestPhoto.FearScore*100).toFixed(3)}}%</td><td class="text-right"><i class="fa fa-star" class="bestRank" ng-if="vm.latestPhoto.RankFear == 1"></i>&nbsp;&nbsp;{{vm.latestPhoto.RankFear}}</td></tr>
-                                    <tr><td>Sadness</td><td class="text-center">{{(vm.latestPhoto.SadnessScore*100).toFixed(3)}}%</td><td class="text-right"><i class="fa fa-star" class="bestRank" ng-if="vm.latestPhoto.RankSadness == 1"></i>&nbsp;&nbsp;{{vm.latestPhoto.RankSadness}}</td></tr>
-                                    <tr><td>Surprise</td><td class="text-center">{{(vm.latestPhoto.SurpriseScore*100).toFixed(3)}}%</td><td class="text-right"><i class="fa fa-star" class="bestRank" ng-if="vm.latestPhoto.RankSurprise == 1"></i>&nbsp;&nbsp;{{vm.latestPhoto.RankSurprise}}</td></tr>
+                                    <tr ng-repeat="emo in vm.latestPhoto.emotions | orderBy:'-score'" ng-if="emo.rank">
+                                        <td>{{emo.name}}</td><td class="text-center">{{(emo.score*100).toFixed(3)}}%</td><td class="text-right"><i class="fa fa-star" class="bestRank" ng-if="emo.rank == 1"></i>&nbsp;&nbsp;{{emo.rank}}</td>
+                                    </tr> 
                                 </tbody>
                             </table>
                         </div>
@@ -150,7 +148,7 @@
                 </div>
             </section>
 
-            <section id="Split2" ng-if="vm.currentPage === 5" class="text-center">
+            <section id="Split-All" ng-if="vm.currentPage === 5" class="text-center">
                 <div class="col-lg-6">
                     <div class="header">
                         <h1 style="padding: 20px;">
@@ -174,9 +172,9 @@
                         <h1 style="padding: 20px;paddig-bottom:15px;">Latest</h1>
                     </div>
                     <div class="main">
-                        <img height="900" ng-src="{{vm.latestPhoto.BlobUri}}" style="padding-bottom: 10px;">
-                        <h1 style="padding: 20px;">{{vm.latestPhoto.Name}}</h1>
-                        <h2 style="padding-bottom: 30px;">Highest score: <strong>{{vm.latestPhoto.HighestScore}}</strong></h2>
+                        <img height="900" ng-src="{{vm.latestPhoto.blobUri}}" style="padding-bottom: 10px;">
+                        <h1 style="padding: 20px;">{{vm.latestPhoto.name}}</h1>
+                        <h2 style="padding-bottom: 30px;">Highest score: <strong>{{vm.latestPhoto.highestScore}}</strong></h2>
                         <div class="col-lg-10 col-lg-offset-1 text-center">
                             <table class="table table-condensed table-striped text-left" style="font-size: 30px;">
                                 <thead>
@@ -187,14 +185,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td>Anger</td><td class="text-center">{{(vm.latestPhoto.AngerScore*100).toFixed(3)}}%</td><td class="text-right"><i class="fa fa-star" class="bestRank" ng-if="vm.latestPhoto.RankAnger == 1"></i>&nbsp;&nbsp;{{vm.latestPhoto.RankAnger}}</td></tr>
-                                    <tr><td>Contempt</td><td class="text-center">{{(vm.latestPhoto.ContemptScore*100).toFixed(3)}}%</td><td class="text-right"></td></tr>
-                                    <tr><td>Disgust</td><td class="text-center">{{(vm.latestPhoto.DisgustScore*100).toFixed(3)}}%</td><td class="text-right"><i class="fa fa-star" class="bestRank" ng-if="vm.latestPhoto.RankDisgust == 1"></i>&nbsp;&nbsp;{{vm.latestPhoto.RankDisgust}}</td></tr>
-                                    <tr><td>Fear</td><td class="text-center">{{(vm.latestPhoto.FearScore*100).toFixed(3)}}%</td><td class="text-right"><i class="fa fa-star" class="bestRank" ng-if="vm.latestPhoto.RankFear == 1"></i>&nbsp;&nbsp;{{vm.latestPhoto.RankFear}}</td></tr>
-                                    <tr><td>Happiness</td><td class="text-center">{{(vm.latestPhoto.HappinessScore*100).toFixed(3)}}%</td><td class="text-right"></td></tr>
-                                    <tr><td>Neutral</td><td class="text-center">{{(vm.latestPhoto.NeutralScore*100).toFixed(3)}}%</td><td class="text-right"></td></tr>
-                                    <tr><td>Sadness</td><td class="text-center">{{(vm.latestPhoto.SadnessScore*100).toFixed(3)}}%</td><td class="text-right"><i class="fa fa-star" class="bestRank" ng-if="vm.latestPhoto.RankSadness == 1"></i>&nbsp;&nbsp;{{vm.latestPhoto.RankSadness}}</td></tr>
-                                    <tr><td>Surprise</td><td class="text-center">{{(vm.latestPhoto.SurpriseScore*100).toFixed(3)}}%</td><td class="text-right"><i class="fa fa-star" class="bestRank" ng-if="vm.latestPhoto.RankSurprise == 1"></i>&nbsp;&nbsp;{{vm.latestPhoto.RankSurprise}}</td></tr>
+                                    <tr ng-repeat="emo in vm.latestPhoto.emotions | orderBy:'-score'">
+                                        <td>{{emo.name}}</td><td class="text-center">{{(emo.score*100).toFixed(3)}}%</td><td class="text-right"><i class="fa fa-star" class="bestRank" ng-if="emo.rank == 1"></i>&nbsp;&nbsp;{{emo.rank}}</td>
+                                    </tr> 
                                 </tbody>
                             </table>
                         </div>
