@@ -16,7 +16,7 @@
 		
 		var vm = this;
 
-        vm.currentPage = 4;
+        vm.currentPage = 2;
         vm.currentSlideShowPage = 1;
 		vm.emotionHeaderTexts = [];
         vm.error = null;
