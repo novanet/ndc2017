@@ -50,9 +50,8 @@ namespace Upload.Controllers
 
         private async Task<(Guid photoId, string blobUri)> StoreToBlob(IFormFile file)
         {
-            var storageAccount = CloudStorageAccount.Parse(
-                Environment.GetEnvironmentVariable("CUSTOMCONNSTR_EmoStorage")
-            );
+            var connectionString = Environment.GetEnvironmentVariable("ndc2017PhotosStorage");
+            var storageAccount = CloudStorageAccount.Parse(connectionString);
             
             var blobClient = storageAccount.CreateCloudBlobClient();
 

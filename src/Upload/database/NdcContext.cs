@@ -9,7 +9,7 @@ namespace Upload.database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_NDC");
+            var connectionString = Environment.GetEnvironmentVariable("ndc2017SqlDatabase");
             optionsBuilder.UseSqlServer(connectionString);
         }
 

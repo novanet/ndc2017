@@ -7,7 +7,12 @@ namespace Upload.Security
     {
         public Task<bool> ValidateAsync(string apiKey)
         {
-            return Task.FromResult(apiKey == Environment.GetEnvironmentVariable("APPSETTING_ApiKey"));
+            var correctKey = Environment.GetEnvironmentVariable("ndc2017ApiKey");
+#if DEBUG
+            correctKey = "debug";
+#endif
+
+            return Task.FromResult(apiKey == correctKey);
         }
     }
 }
