@@ -1,0 +1,11 @@
+{
+  "frameworks": {
+    "net46": {
+      "dependencies": {
+        "Microsoft.ProjectOxford.Face": "1.2.1.2",
+        "Microsoft.ProjectOxford.Common": "1.0.324",
+        "Microsoft.AspNet.WebApi.Client": "5.2.3" 
+      }
+    }
+  }
+}

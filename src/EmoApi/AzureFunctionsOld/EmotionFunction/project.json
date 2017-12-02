@@ -1,0 +1,10 @@
+{
+  "frameworks": {
+    "net46": {
+      "dependencies": {
+        "Microsoft.ProjectOxford.Emotion": "1.0.336",
+        "Microsoft.ProjectOxford.Common": "1.0.324"
+      }
+    }
+  }
+}
