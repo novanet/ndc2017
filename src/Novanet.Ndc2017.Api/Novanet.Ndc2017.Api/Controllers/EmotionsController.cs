@@ -1,6 +1,6 @@
-﻿using Dapper;
+﻿using System;
+using Dapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -13,7 +13,8 @@ namespace Novanet.Ndc2017.Api.Controllers
         [HttpPost]
         public void Post([FromBody]Emotions emotions)
         {
-            using (IDbConnection db = new SqlConnection("Server=tcp:ndc.database.windows.net,1433;Initial Catalog=ndc2017;Persist Security Info=False;User ID=ndc;Password=w8ing4dooM!!!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+
+            using (IDbConnection db = new SqlConnection(Environment.GetEnvironmentVariable("ndc2017sql")))
             {
                 db.Execute(@"INSERT INTO 
 [dbo].[Emotions]([PhotoId],[Anger],[Contempt],[Disgust],[Fear],[Happiness],[Neutral],[Sadness],[Surprise], [Added]) 

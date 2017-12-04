@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Dapper;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
-using Dapper;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Novanet.Ndc2017.Api.Controllers
 {
@@ -16,7 +14,8 @@ namespace Novanet.Ndc2017.Api.Controllers
         [HttpGet]
         public IEnumerable<dynamic> Get()
         {
-            using (IDbConnection db = new SqlConnection("Server=tcp:ndc.database.windows.net,1433;Initial Catalog=ndc2017;Persist Security Info=False;User ID=ndc;Password=w8ing4dooM!!!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+
+            using (IDbConnection db = new SqlConnection(Environment.GetEnvironmentVariable("ndc2017sql")))
             {
                 return db.Query<dynamic>(@"SELECT Emotion, [Rank], U.[Name] as [User], Score, P.BlobUri FROM (  
 	                                            SELECT 'Anger' AS Emotion, RANK() OVER (ORDER BY Anger DESC) AS [Rank], PhotoId, Anger AS Score FROM dbo.[Emotions] WHERE PhotoId IN (SELECT Id FROM dbo.Photo) GROUP BY PhotoId, Anger UNION ALL 

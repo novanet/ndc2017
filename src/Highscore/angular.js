@@ -105,7 +105,7 @@
 
         function getHighscore() {
             return $q(function(resolve, reject) {
-                $http.get('http://novanetndc2017api.azurewebsites.net/api/highscore')
+                $http.get('https://novanetndc2017api.azurewebsites.net/api/highscore')
                     .then(function(response) {
                         resolve(response.data);
                     });
@@ -114,7 +114,7 @@
 		
 		function getLatestPhoto() {
             return $q(function(resolve, reject) {
-                $http.get('http://novanetndc2017api.azurewebsites.net/api/lastPhoto')
+                $http.get('https://novanetndc2017api.azurewebsites.net/api/lastPhoto')
                     .then(function(response) {
                         resolve(response.data);
                     });
