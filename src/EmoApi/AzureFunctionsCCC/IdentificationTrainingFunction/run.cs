@@ -81,7 +81,7 @@ namespace Novanet {
 
             if (string.IsNullOrEmpty(baseUrl) || string.IsNullOrEmpty(apiKey))
             {
-                throw new ConfigurationErrorsException("Missing userApiBaseUrl or userApiKey in environment variables.");
+                throw new Exception("Missing userApiBaseUrl or userApiKey in environment variables.");
             }
 
             using (var client = new HttpClient())
